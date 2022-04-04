@@ -5,9 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class SplashActivity extends AppCompatActivity {
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
+    private Intent  myIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,12 +22,18 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         getSupportActionBar().hide();
 
-
-
+        mAuth=FirebaseAuth.getInstance();
+        mUser=mAuth.getCurrentUser();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent  myIntent=new Intent(SplashActivity.this,LoginActivity.class);
+                if(mUser!=null){
+                      myIntent=new Intent(SplashActivity.this,MainActivity.class);
+                }
+                else {
+                      myIntent=new Intent(SplashActivity.this,LoginActivity.class);
+                }
+
                 startActivity(myIntent);
                 finish();
             }
