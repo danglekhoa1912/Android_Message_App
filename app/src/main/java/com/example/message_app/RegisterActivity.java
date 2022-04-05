@@ -13,12 +13,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.message_app.model.Chat;
+import com.example.message_app.model.Message;
+import com.example.message_app.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -28,17 +37,16 @@ public class RegisterActivity extends AppCompatActivity {
     private Button btnSignUp;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
+    private DatabaseReference reference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         setContentView(R.layout.activity_register);
         AnhXa();
-//        init();
         HandleAction();
         mAuth=FirebaseAuth.getInstance();
-        mUser=mAuth.getCurrentUser();
     }
 
     private void AnhXa(){
@@ -87,7 +95,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void Register(){
-        String user=inputUserName.getText().toString();
         String email=inputEmail.getText().toString();
         String pass=inputPassword.getText().toString();
 
@@ -97,7 +104,22 @@ public class RegisterActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     Toast.makeText(RegisterActivity.this,"Register Success",Toast.LENGTH_LONG).show();
-                    moveLoginActivity();
+                    mUser=mAuth.getCurrentUser();
+                    String userId=mUser.getUid();
+
+                    reference= FirebaseDatabase.getInstance().getReference("Users").child(userId);
+                    List<String> list = new ArrayList<String>();
+                    list.add("");
+                    List<Chat> listChat=new ArrayList<Chat>();
+                    listChat.add(new Chat("1","1",new Message("hello","1")));
+                    User user=new User(inputUserName.getText().toString(),"default",list,list,listChat);
+                    reference.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            moveLoginActivity();
+                        }
+                    });
+
                 }else {
                     Toast.makeText(RegisterActivity.this,"Register faill",Toast.LENGTH_LONG).show();
                 }
