@@ -1,20 +1,35 @@
 <resources>
-    <string name="app_name">Message_App</string>
-    <string name="user_name">User Name</string>
-    <string name="password">Password</string>
-    <string name="confirm_pass">Confirm Password</string>
-    <string name="google">Login With Google</string>
-    <string name="email">Email</string>
+
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
+
 
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+
+
+    <!--thông tin người dùng-->
+    <string name="app_name">Message_App</string>
+    <string name="user_name">Tên</string>
+    <string name="password">Mật khẩu</string>
+    <string name="confirm_pass">Nhập lại mật khẩu</string>
+    <string name="email">Email</string>
+
+    <!--các nút chức năng-->
+    <string name="action_settings">Cài đặt</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="login">Đăng nhập</string>
+    <string name="register">Đăng ký</string>
+    <string name="forgot_password">Quên mật khẩu</string>
+    <string name="google">Đăng nhập với Google</string>
+    <string name="content_dialog_logout">Bạn có chắc muốn đăng xuất</string>'
+    <string name="logout_confirm">Xác nhân</string>
+    <string name="logout_cancel">Hủy</string>
+
 
 </resources>
