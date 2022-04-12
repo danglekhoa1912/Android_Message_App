@@ -47,10 +47,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/whiteGray"
-            android:hint="@string/user_name">
+            android:hint="Số điện thoại">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputUserName"
+                android:id="@+id/inputMoblie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLines="1"
@@ -59,7 +59,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
         <TextView
-            android:id="@+id/lblErrorName"
+            android:id="@+id/lblErrorMoblie"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/whiteGray"
@@ -163,7 +163,7 @@
             android:id="@+id/btnSignUp"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Bước tiếp theo" />
+            android:text="@string/register" />
 
 
         <Button
