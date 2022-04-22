@@ -38,7 +38,7 @@
         android:paddingVertical="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
@@ -47,24 +47,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/whiteGray"
-            android:hint="@string/user_name">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputUserName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:inputType="text"
-                />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/whiteGray"
-            android:layout_marginTop="5dp"
             android:hint="Số điện thoại">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -76,6 +58,41 @@
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/lblErrorMoblie"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/whiteGray"
+            android:text="LBL error"
+            android:textColor="#FF0000"
+            android:layout_marginTop="10dp"
+            />
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/whiteGray"
+            android:layout_marginTop="5dp"
+            android:hint="@string/email">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/inputEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:inputType="text"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/lblErrorEmail"
+            android:layout_height="wrap_content"
+            android:background="@color/whiteGray"
+            android:text="LBL error"
+            android:textColor="#FF0000"
+            android:layout_marginTop="10dp"
+            />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -96,7 +113,15 @@
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
-
+        <TextView
+            android:id="@+id/lblErrorPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/whiteGray"
+            android:text="LBL error"
+            android:textColor="#FF0000"
+            android:layout_marginTop="10dp"
+            />
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
@@ -116,25 +141,15 @@
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
-        <LinearLayout
+        <TextView
+            android:id="@+id/lblErrorRePass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <EditText
-                android:layout_width="220dp"
-                android:layout_height="match_parent"
-                android:enabled="false"
-                android:id="@+id/birthday"
-                android:inputType="date"
-                android:hint="Ngày sinh" />
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Chọn ngày"
-                android:id="@+id/btnDate"/>
-
-        </LinearLayout>
+            android:background="@color/whiteGray"
+            android:text="LBL error"
+            android:textColor="#FF0000"
+            android:layout_marginTop="10dp"
+            />
 
     </LinearLayout>
 
@@ -148,13 +163,12 @@
             android:id="@+id/btnSignUp"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Đăng ký" />
-
+            android:text="@string/register" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
