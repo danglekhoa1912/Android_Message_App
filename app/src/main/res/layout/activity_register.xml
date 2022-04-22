@@ -58,16 +58,7 @@
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
-        <TextView
-            android:id="@+id/lblErrorName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/whiteGray"
-            android:text="LBL error"
-            android:textColor="#FF0000"
-            android:layout_marginTop="10dp"
-            android:padding="5dp"
-            />
+
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
@@ -85,16 +76,6 @@
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:id="@+id/lblErrorMoblie"
-            android:layout_height="wrap_content"
-            android:background="@color/whiteGray"
-            android:text="LBL error"
-            android:textColor="#FF0000"
-            android:layout_marginTop="10dp"
-            android:padding="5dp"
-            />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -115,16 +96,7 @@
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
-        <TextView
-            android:id="@+id/lblErrorPass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/whiteGray"
-            android:text="LBL error"
-            android:textColor="#FF0000"
-            android:layout_marginTop="10dp"
-            android:padding="5dp"
-            />
+
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
@@ -144,16 +116,25 @@
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
-        <TextView
-            android:id="@+id/lblErrorRePass"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/whiteGray"
-            android:text="LBL error"
-            android:textColor="#FF0000"
-            android:layout_marginTop="10dp"
-            android:padding="5dp"
-            />
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:layout_width="220dp"
+                android:layout_height="match_parent"
+                android:enabled="false"
+                android:id="@+id/birthday"
+                android:inputType="date"
+                android:hint="Ngày sinh" />
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Chọn ngày"
+                android:id="@+id/btnDate"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
