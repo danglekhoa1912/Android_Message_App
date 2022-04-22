@@ -21,18 +21,18 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 //        getSupportActionBar().hide();
-
-        mAuth=FirebaseAuth.getInstance();
-        mUser=mAuth.getCurrentUser();
+//        mAuth=FirebaseAuth.getInstance();
+//        mUser=mAuth.getCurrentUser();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(mUser!=null){
-                      myIntent=new Intent(SplashActivity.this,MainActivity.class);
-                }
-                else {
-                      myIntent=new Intent(SplashActivity.this,LoginActivity.class);
-                }
+//                if(mUser!=null){
+//                      myIntent=new Intent(SplashActivity.this,HomeActivity.class);
+//                }
+//                else {
+//                      myIntent=new Intent(SplashActivity.this,HomeActivity.class);
+//                }
+                myIntent=new Intent(SplashActivity.this,HomeActivity.class);
 
                 startActivity(myIntent);
                 finish();

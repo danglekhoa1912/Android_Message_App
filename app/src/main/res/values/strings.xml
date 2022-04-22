@@ -31,5 +31,6 @@
     <string name="logout_confirm">Xác nhân</string>
     <string name="logout_cancel">Hủy</string>
 
+    <!--Bottom Tab -->
 
 </resources>
