@@ -48,7 +48,7 @@ import java.util.regex.Pattern;
 public class RegisterActivity extends AppCompatActivity {
 
     private LinearLayout mainLayout;
-    private TextView tvLogin,lblErrorMoblie,lblErrorPass,lblErrorRePass,lblErrorName;
+    private TextView tvLogin;
     private TextInputEditText inputMoblie,inputUserName,inputEmail,inputPassword,inputRePassword;
     private Button btnSignUp,btnDate;
     private EditText birthday;
@@ -58,18 +58,10 @@ public class RegisterActivity extends AppCompatActivity {
     private int lastSelectedYear=2000;
     private int lastSelectedMonth;
     private int lastSelectedDayOfMonth;
-    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     public static boolean checkUsername(String s){
         s=unAccent(s);
-        Pattern p = Pattern.compile("[^A-Za-z0-9]");
-        Matcher m = p.matcher(s);
-        if (m.find()){ //Chuoi co ki tu dac biet
-            return true;
-        }
-        else
-        return false; // Chuoi hop le (khong thuộc 3 đk trên)
+        return !s.matches("[^A-Za-z0-9]");
     }
     public static boolean checkPassword(String password)
     {
@@ -198,10 +190,11 @@ public class RegisterActivity extends AppCompatActivity {
         inputUserName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                if (!checkUsername(inputUserName.getText().toString())){
-                    inputUserName.setError("Tên không có ký tự đặc biệt!");
+                if(!b) {
+                    if (!checkUsername(inputUserName.getText().toString())) {
+                        inputUserName.setError("Tên không có ký tự đặc biệt!");
+                    } else inputUserName.setError(null);
                 }
-                else inputUserName.setError(null);
             }
         });
         tvLogin.setOnClickListener(new View.OnClickListener() {
@@ -227,6 +220,9 @@ public class RegisterActivity extends AppCompatActivity {
                     alert.show();
                 }
                 else {
+                    Intent intent=new Intent(RegisterActivity.this,OtpActivity.class);
+                    intent.putExtra("mobile",inputMoblie.getText().toString());
+                    startActivity(intent);
                     //Register();
                 }
             }
