@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                myIntent = new Intent(LoginActivity.this, OtpActivity.class);
                 startActivity(myIntent);
             }
         });

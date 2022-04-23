@@ -77,10 +77,4 @@ public class MainActivity extends AppCompatActivity {
         navigationView=findViewById(R.id.navigationView);
 
     }
-
-
-
-
-
-
 }

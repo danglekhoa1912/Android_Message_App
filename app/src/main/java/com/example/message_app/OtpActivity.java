@@ -1,18 +1,35 @@
 package com.example.message_app;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.TaskExecutors;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.PhoneAuthProvider;
+
+import java.io.Console;
+import java.io.Writer;
+import java.util.concurrent.TimeUnit;
 
 public class OtpActivity extends AppCompatActivity {
 
     private EditText inputCode1,inputCode2,inputCode3,inputCode4,inputCode5,inputCode6;
     private TextView textMobile;
+    private FirebaseAuth mAuth;
     private Button btnVerify;
     private void anhXa(){
         inputCode1=findViewById(R.id.inputCode1);
@@ -29,7 +46,29 @@ public class OtpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp);
+        mAuth = FirebaseAuth.getInstance();
         anhXa();
+        /*PhoneAuthProvider.getInstance().verifyPhoneNumber("+84947549001",
+                60,
+                TimeUnit.SECONDS,
+                OtpActivity.this,
+                new PhoneAuthProvider.OnVerificationStateChangedCallbacks(){
+                    @Override
+                    public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential){
+
+                    }
+                    @Override
+                    public void onVerificationFailed(@NonNull FirebaseException e){
+
+                    }
+
+                    @Override
+                    public void onCodeSent(@NonNull String s, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                        //super.onCodeSent(s, forceResendingToken);
+                        textMobile.setText(s);
+                    }
+                });
+         ;*/
         inputCode1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -120,5 +159,48 @@ public class OtpActivity extends AppCompatActivity {
 
             }
         });
+        btnVerify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendVerificationCode("");
+            }
+        });
     }
+    private void sendVerificationCode(String mobile) {
+        PhoneAuthOptions options =
+                PhoneAuthOptions.newBuilder(mAuth)
+                        .setPhoneNumber("+84947549001")       // Phone number to verify
+                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                        .setActivity(this)                 // Activity (for callback binding)
+                        .setCallbacks(mCallbacks)       // OnVerificationStateChangedCallbacks
+                        .build();
+        PhoneAuthProvider.verifyPhoneNumber(options);
+    }
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        @Override
+        public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+            //Getting the code sent by SMS
+            String code = phoneAuthCredential.getSmsCode();
+
+            //sometime the code is not detected automatically
+            //in this case the code will be null
+            //so user has to manually enter the code
+            if (code != null) {
+                textMobile.setText(code);
+                //verifying the code
+                //verifyVerificationCode(code);
+            }
+        }
+        @Override
+        public void onVerificationFailed(FirebaseException e) {
+            Toast.makeText(OtpActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+        @Override
+        public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+            super.onCodeSent(s, forceResendingToken);
+            textMobile.setText(s);
+            //mVerificationId = s;
+            //mResendToken = forceResendingToken;
+        }
+    };
 }
