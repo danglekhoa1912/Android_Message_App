@@ -94,25 +94,27 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void Login() {
-        String email = inputEmail.getText().toString();
-        String pass = inputPassword.getText().toString();
-        //Khi tat ca deu hop le
-        if(!email.isEmpty()&&!pass.isEmpty()){
-            mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
-                        myIntent = new Intent(LoginActivity.this, HomeActivity.class);
+//        String email = inputEmail.getText().toString();
+//        String pass = inputPassword.getText().toString();
+//        //Khi tat ca deu hop le
+//        if(!email.isEmpty()&&!pass.isEmpty()){
+//            mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                @Override
+//                public void onComplete(@NonNull Task<AuthResult> task) {
+//                    if (task.isSuccessful()) {
+//                        Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
+//                        myIntent = new Intent(LoginActivity.this, HomeActivity.class);
+//                        startActivity(myIntent);
+//                        finish();
+//                    } else {
+//                        Toast.makeText(LoginActivity.this, task.getException().toString(), Toast.LENGTH_LONG).show();
+//                    }
+//                }
+//            });
+//        }
+        myIntent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(myIntent);
                         finish();
-                    } else {
-                        Toast.makeText(LoginActivity.this, task.getException().toString(), Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
-        }
-
     }
 
 }

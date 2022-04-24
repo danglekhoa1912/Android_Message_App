@@ -162,14 +162,14 @@ public class OtpActivity extends AppCompatActivity {
         btnVerify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sendVerificationCode("");
+                sendVerificationCode("972257687");
             }
         });
     }
     private void sendVerificationCode(String mobile) {
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(mAuth)
-                        .setPhoneNumber("+84947549001")       // Phone number to verify
+                        .setPhoneNumber("+84"+mobile)       // Phone number to verify
                         .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
                         .setActivity(this)                 // Activity (for callback binding)
                         .setCallbacks(mCallbacks)       // OnVerificationStateChangedCallbacks
