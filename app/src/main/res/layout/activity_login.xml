@@ -99,15 +99,6 @@
             android:layout_height="60dp"
             android:text="@string/login" />
 
-        <Button
-            android:id="@+id/btnLoginWithGG"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:backgroundTint="@color/white"
-            android:drawableLeft="@drawable/google"
-            android:text="@string/google"
-            android:textColor="@color/black" />
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

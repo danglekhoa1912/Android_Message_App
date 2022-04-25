@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "431940968072",
+    "firebase_url": "https://message-app-9736d-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "message-app-9736d",
     "storage_bucket": "message-app-9736d.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "431940968072-tqtnp2hupc7kjkc82ct9qr9qp6g3thh7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.message_app",
+            "certificate_hash": "a90cb80e1c5c779f9a5b05583c97b684b6f3c7e3"
+          }
+        },
         {
           "client_id": "431940968072-iafivan4bip4ag454fssb3ulfbm8r588.apps.googleusercontent.com",
           "client_type": 3

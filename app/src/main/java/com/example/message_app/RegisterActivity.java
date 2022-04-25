@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -200,7 +201,7 @@ public class RegisterActivity extends AppCompatActivity {
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                moveLoginActivity();
+                moveActivity(LoginActivity.class);
             }
         });
         btnSignUp.setOnClickListener(new View.OnClickListener() {
@@ -220,10 +221,13 @@ public class RegisterActivity extends AppCompatActivity {
                     alert.show();
                 }
                 else {
-                    Intent intent=new Intent(RegisterActivity.this,OtpActivity.class);
-                    intent.putExtra("mobile",inputMoblie.getText().toString());
-                    startActivity(intent);
-                    //Register();
+//                    Intent intent=new Intent(RegisterActivity.this,OtpActivity.class);
+//                    intent.putExtra("mobile",inputMoblie.getText().toString());
+//                    intent.putExtra("pass",inputPassword.getText().toString());
+//                    intent.putExtra("name",inputUserName.getText().toString());
+//
+//                    startActivity(intent);
+                    Register();
                 }
             }
         });
@@ -257,18 +261,33 @@ public class RegisterActivity extends AppCompatActivity {
                     mUser=mAuth.getCurrentUser();
                     String userId=mUser.getUid();
 
-                    reference= FirebaseDatabase.getInstance().getReference("Users").child(userId);
+                    mUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(RegisterActivity.this,
+                                        "Verification email sent to " + mUser.getEmail(),
+                                        Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.e("TAG", "sendEmailVerification", task.getException());
+                                Toast.makeText(RegisterActivity.this,
+                                        "Failed to send verification email.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+                    reference= FirebaseDatabase.getInstance().getReference("User").child(userId);
                     List<String> list = new ArrayList<String>();
                     list.add("");
-                    List<Chat> listChat=new ArrayList<Chat>();
-                    listChat.add(new Chat("1","1",new Message("hello","1")));
-                    User user=new User(inputUserName.getText().toString(),"default",list,list,listChat);
+                    User user=new User(inputUserName.getText().toString(),"default",inputMoblie.getText().toString(),list,list);
                     reference.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            moveLoginActivity();
+                            moveActivity(LoginActivity.class);
                         }
                     });
+
 
                 }else {
                     Toast.makeText(RegisterActivity.this,"Register faill",Toast.LENGTH_LONG).show();
@@ -306,8 +325,8 @@ public class RegisterActivity extends AppCompatActivity {
         // Show
         datePickerDialog.show();
     }
-    private void moveLoginActivity(){
-        Intent myIntent=new Intent(RegisterActivity.this,LoginActivity.class);
+    private void moveActivity(Class screen){
+        Intent myIntent=new Intent(RegisterActivity.this,screen);
         startActivity(myIntent);
     }
 
