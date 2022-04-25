@@ -25,7 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity {
     private LinearLayout mainLayout;
     private TextInputEditText inputEmail, inputPassword;
-    private Button btnLogin, btnLoginWithGG;
+    private Button btnLogin;
     private TextView tvRegister;
     private Intent myIntent;
     private FirebaseAuth mAuth;
@@ -73,14 +73,13 @@ public class LoginActivity extends AppCompatActivity {
         inputPassword = findViewById(R.id.inputPasswordLogin);
         tvRegister = findViewById(R.id.tvRegister);
         btnLogin = findViewById(R.id.btnLogin);
-        btnLoginWithGG = findViewById(R.id.btnLoginWithGG);
     }
 
     private void HandleAction() {
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myIntent = new Intent(LoginActivity.this, OtpActivity.class);
+                myIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(myIntent);
             }
         });
@@ -94,27 +93,29 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void Login() {
-//        String email = inputEmail.getText().toString();
-//        String pass = inputPassword.getText().toString();
-//        //Khi tat ca deu hop le
-//        if(!email.isEmpty()&&!pass.isEmpty()){
-//            mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                @Override
-//                public void onComplete(@NonNull Task<AuthResult> task) {
-//                    if (task.isSuccessful()) {
-//                        Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
-//                        myIntent = new Intent(LoginActivity.this, HomeActivity.class);
-//                        startActivity(myIntent);
-//                        finish();
-//                    } else {
-//                        Toast.makeText(LoginActivity.this, task.getException().toString(), Toast.LENGTH_LONG).show();
-//                    }
-//                }
-//            });
-//        }
-        myIntent = new Intent(LoginActivity.this, HomeActivity.class);
-                        startActivity(myIntent);
-                        finish();
+        String email = inputEmail.getText().toString();
+        String pass = inputPassword.getText().toString();
+        //Khi tat ca deu hop le
+        if(!email.isEmpty()&&!pass.isEmpty()){
+            mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(mUser.isEmailVerified()){
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
+                            myIntent = new Intent(LoginActivity.this, HomeActivity.class);
+                            startActivity(myIntent);
+                            finish();
+                        } else {
+                            Toast.makeText(LoginActivity.this, task.getException().toString(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                   else {
+                       Toast.makeText(LoginActivity.this,"Vui lòng xác nhận email của bạn",Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
     }
 
 }

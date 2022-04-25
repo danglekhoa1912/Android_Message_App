@@ -4,9 +4,20 @@ import java.util.List;
 
 public class User {
 
-    private String userName,avatar;
+
+    private String userName,avatar,mobile;
     private List<String> listFriend,blockList;
-    private List<Chat> listChat;
+
+    public User(String userName, String avatar, String mobile, List<String> listFriend, List<String> blockList) {
+        this.userName = userName;
+        this.avatar = avatar;
+        this.mobile = mobile;
+        this.listFriend = listFriend;
+        this.blockList = blockList;
+    }
+
+    public  User(){}
+
 
     public String getUserName() {
         return userName;
@@ -40,19 +51,12 @@ public class User {
         this.blockList = blockList;
     }
 
-    public List<Chat> getListChat() {
-        return listChat;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setListChat(List<Chat> listChat) {
-        this.listChat = listChat;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
-    public User(String userName, String avatar, List<String> listFriend, List<String> blockList, List<Chat> listChat) {
-        this.userName = userName;
-        this.avatar = avatar;
-        this.listFriend = listFriend;
-        this.blockList = blockList;
-        this.listChat = listChat;
-    }
 }

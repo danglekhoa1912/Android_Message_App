@@ -25,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(mUser!=null){
+                if(mUser!=null&&mUser.isEmailVerified()){
                       myIntent=new Intent(SplashActivity.this,HomeActivity.class);
                 }
                 else {
