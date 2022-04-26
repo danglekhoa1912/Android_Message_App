@@ -36,7 +36,6 @@ public class ChatFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private Button btnLogOut;
     private FirebaseAuth mAuth;
     private DatabaseReference reference;
 
@@ -78,7 +77,6 @@ public class ChatFragment extends Fragment {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_chat, container, false);
 
-        btnLogOut=view.findViewById(R.id.buttonLogOut);
         mAuth=FirebaseAuth.getInstance();
 //        reference= FirebaseDatabase.getInstance().getReference("User").child(mAuth.getCurrentUser().getUid());
 //
@@ -96,19 +94,10 @@ public class ChatFragment extends Fragment {
 //        });
 
 
-        btnLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SignOut();
-            }
-        });
 
         return view;
     }
 
-    private void SignOut(){
-        mAuth.signOut();
-        startActivity(new Intent(getActivity(),LoginActivity.class));
-    }
+
 
 }
