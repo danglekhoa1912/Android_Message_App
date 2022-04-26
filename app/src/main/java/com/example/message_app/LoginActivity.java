@@ -42,7 +42,6 @@ public class LoginActivity extends AppCompatActivity {
         init();
         HandleAction();
         mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
 
 
     }
@@ -100,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
             mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
+                    mUser = mAuth.getCurrentUser();
                     if(mUser.isEmailVerified()){
                         if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
