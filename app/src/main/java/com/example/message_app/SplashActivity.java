@@ -20,15 +20,13 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        getSupportActionBar().hide();
-
         mAuth=FirebaseAuth.getInstance();
         mUser=mAuth.getCurrentUser();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(mUser!=null){
-                      myIntent=new Intent(SplashActivity.this,MainActivity.class);
+                if(mUser!=null&&mUser.isEmailVerified()){
+                      myIntent=new Intent(SplashActivity.this,HomeActivity.class);
                 }
                 else {
                       myIntent=new Intent(SplashActivity.this,LoginActivity.class);

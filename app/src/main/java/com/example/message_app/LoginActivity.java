@@ -25,7 +25,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity {
     private LinearLayout mainLayout;
     private TextInputEditText inputEmail, inputPassword;
-    private Button btnLogin, btnLoginWithGG;
+    private Button btnLogin;
     private TextView tvRegister;
     private Intent myIntent;
     private FirebaseAuth mAuth;
@@ -35,14 +35,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
 
         AnhXa();
         init();
         HandleAction();
         mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
 
 
     }
@@ -73,7 +72,6 @@ public class LoginActivity extends AppCompatActivity {
         inputPassword = findViewById(R.id.inputPasswordLogin);
         tvRegister = findViewById(R.id.tvRegister);
         btnLogin = findViewById(R.id.btnLogin);
-        btnLoginWithGG = findViewById(R.id.btnLoginWithGG);
     }
 
     private void HandleAction() {
@@ -101,18 +99,24 @@ public class LoginActivity extends AppCompatActivity {
             mAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
+                    mUser = mAuth.getCurrentUser();
                     if (task.isSuccessful()) {
-                        Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
-                        myIntent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(myIntent);
-                        finish();
+                        if(mUser.isEmailVerified()){
+                            Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
+                            myIntent = new Intent(LoginActivity.this, HomeActivity.class);
+                            startActivity(myIntent);
+                            finish();
+                        }
+                        else {
+                            Toast.makeText(LoginActivity.this,"Vui lòng xác nhận email của bạn",Toast.LENGTH_LONG).show();
+                        }
                     } else {
-                        Toast.makeText(LoginActivity.this, task.getException().toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "Email hoặc mật khẩu không chính xác", Toast.LENGTH_LONG).show();
+                            Log.d("error",task.getException().toString());
                     }
                 }
             });
         }
-
     }
 
 }

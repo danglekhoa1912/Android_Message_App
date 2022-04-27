@@ -83,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:text="Forgot password"
+            android:text="@string/forgot_password"
             android:textColor="@color/primary" />
     </LinearLayout>
 
@@ -97,16 +97,7 @@
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Login" />
-
-        <Button
-            android:id="@+id/btnLoginWithGG"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:backgroundTint="@color/white"
-            android:drawableLeft="@drawable/google"
-            android:text="@string/google"
-            android:textColor="@color/black" />
+            android:text="@string/login" />
 
         <LinearLayout
             android:layout_width="wrap_content"

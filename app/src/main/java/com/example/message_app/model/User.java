@@ -1,15 +1,23 @@
 package com.example.message_app.model;
 
+import java.util.List;
+
 public class User {
 
 
-    public String getId() {
-        return id;
+    private String userName,avatar,mobile;
+    private List<String> listFriend,blockList;
+
+    public User(String userName, String avatar, String mobile, List<String> listFriend, List<String> blockList) {
+        this.userName = userName;
+        this.avatar = avatar;
+        this.mobile = mobile;
+        this.listFriend = listFriend;
+        this.blockList = blockList;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public  User(){}
+
 
     public String getUserName() {
         return userName;
@@ -17,22 +25,6 @@ public class User {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getAvatar() {
@@ -43,52 +35,28 @@ public class User {
         this.avatar = avatar;
     }
 
-    public String[] getListFriend() {
+    public List<String> getListFriend() {
         return listFriend;
     }
 
-    public void setListFriend(String[] listFriend) {
+    public void setListFriend(List<String> listFriend) {
         this.listFriend = listFriend;
     }
 
-    public String[] getBlockList() {
+    public List<String> getBlockList() {
         return blockList;
     }
 
-    public void setBlockList(String[] blockList) {
+    public void setBlockList(List<String> blockList) {
         this.blockList = blockList;
     }
 
-    public boolean isStatus() {
-        return status;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
-    private String id,userName,password,name,avatar;
-    private String[] listFriend,blockList;
-    private boolean status;
-    private Chat[] listChat;
-
-    public Chat[] getListChat() {
-        return listChat;
-    }
-
-    public void setListChat(Chat[] listChat) {
-        this.listChat = listChat;
-    }
-
-    public User(String id, String userName, String password, String name, String avatar, String[] listFriend, String[] blockList, boolean status, Chat[] listChat) {
-        this.id = id;
-        this.userName = userName;
-        this.password = password;
-        this.name = name;
-        this.avatar = avatar;
-        this.listFriend = listFriend;
-        this.blockList = blockList;
-        this.status = status;
-        this.listChat = listChat;
-    }
 }
