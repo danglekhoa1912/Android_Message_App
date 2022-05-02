@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
@@ -24,6 +26,8 @@ public class MessageActivity extends AppCompatActivity {
 
     CircleImageView profile_image;
     TextView userName;
+    ImageButton btn_send;
+    EditText text_view;
 
     FirebaseUser mUser;
     DatabaseReference reference;
@@ -65,6 +69,8 @@ public class MessageActivity extends AppCompatActivity {
     private void AnhXa(){
         profile_image=findViewById(R.id.profile_image);
         userName=findViewById(R.id.textViewName);
+        btn_send=findViewById(R.id.btn_send);
+        text_view=findViewById(R.id.text_send);
 
         intent=getIntent();
     }
