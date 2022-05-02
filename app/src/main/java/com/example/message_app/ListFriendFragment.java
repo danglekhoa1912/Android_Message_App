@@ -28,7 +28,7 @@ import java.util.List;
 public class ListFriendFragment extends Fragment {
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
-    private List<User> userList;
+    private List<String> userIdList;
 
 
     @Override
@@ -39,7 +39,7 @@ public class ListFriendFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        userList = new ArrayList<>();
+        userIdList = new ArrayList<>();
         readFriendUsers();
 
         return view;
@@ -52,28 +52,11 @@ public class ListFriendFragment extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                userList.clear();
-
+                userIdList.clear();
                 User userCurrent = dataSnapshot.getValue(User.class);
-                for (int i=0 ;i<userCurrent.getListFriend().size();i++){
-                    DatabaseReference databaseListfriend = FirebaseDatabase.getInstance().getReference("User").child(userCurrent.getListFriend().get(i));
-                    databaseListfriend.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            User user = snapshot.getValue(User.class);
-                            userList.add(user);
-                            userAdapter = new UserAdapter(getContext(), userList);
-                            recyclerView.setAdapter(userAdapter);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
-                Log.e("test",String.valueOf(userList.size()));
-
+                userIdList=userCurrent.getListFriend();
+                userAdapter = new UserAdapter(getContext(), userIdList);
+                recyclerView.setAdapter(userAdapter);
             }
 
             @Override

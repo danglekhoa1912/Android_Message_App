@@ -257,7 +257,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(RegisterActivity.this,"Register Success",Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this,"Đăng ký thành công",Toast.LENGTH_LONG).show();
                     mUser=mAuth.getCurrentUser();
                     String userId=mUser.getUid();
 
@@ -290,7 +290,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                 }else {
-                    Toast.makeText(RegisterActivity.this,"Register faill",Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this,"Đăng ký thất bại",Toast.LENGTH_LONG).show();
                 }
             }
         });

@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Message_App"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".MessageActivity"
+            android:exported="false" />
+        <activity
             android:name=".HomeActivity"
             android:exported="false" />
         <activity

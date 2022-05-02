@@ -3,6 +3,7 @@ package com.example.message_app;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void init() {
         mainLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -102,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                     mUser = mAuth.getCurrentUser();
                     if (task.isSuccessful()) {
                         if(mUser.isEmailVerified()){
-                            Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_LONG).show();
                             myIntent = new Intent(LoginActivity.this, HomeActivity.class);
                             startActivity(myIntent);
                             finish();
