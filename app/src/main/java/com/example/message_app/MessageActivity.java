@@ -34,7 +34,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MessageActivity extends AppCompatActivity {
+public class    MessageActivity extends AppCompatActivity {
 
     public static final int ID_SENDER_LEFT=0;
     public static final int ID_SENDER_RIGHT=1;
