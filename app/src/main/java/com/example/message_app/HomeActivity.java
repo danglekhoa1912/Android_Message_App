@@ -89,8 +89,6 @@ public class HomeActivity extends AppCompatActivity {
                 else{
                     Glide.with(HomeActivity.this).load(user.getAvatar()).into(profile_image);
                 }
-
-
             }
 
             @Override
