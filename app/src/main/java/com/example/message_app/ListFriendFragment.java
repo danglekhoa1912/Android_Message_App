@@ -72,13 +72,13 @@ public class ListFriendFragment extends Fragment {
 
     private void searchUsers(String input){
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseDatabase.getInstance().getReference("User").orderByChild("userName").endAt(input + "\uf8ff").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("User").orderByChild("userName").startAt(input).endAt(input + "\uf8ff").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     for(DataSnapshot data: snapshot.getChildren()){
-                        if(data.getKey()!=firebaseUser.getUid())
-                            Log.d("User12", String.valueOf(data.getKey())+"....");
+                        if(!data.getKey().equals(firebaseUser.getUid()))
+                            Log.d("User12", String.valueOf(data.getKey())+"...."+firebaseUser.getUid());
                     }
                 }
             }
