@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -29,7 +30,7 @@ public class HomeActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private FirebaseAuth mAuth;
     private DatabaseReference reference;
-    private TextView textViewName;
+    private TextView textViewName,friend;
     private CircleImageView profile_image;
 
 
@@ -101,6 +102,7 @@ public class HomeActivity extends AppCompatActivity {
         textViewName=findViewById(R.id.textViewName);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         profile_image=findViewById(R.id.profile_image);
+        //friend=findViewById(R.id.friend);
     }
 
     @Override

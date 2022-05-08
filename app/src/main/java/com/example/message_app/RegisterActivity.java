@@ -10,13 +10,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -24,12 +21,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.message_app.model.Chat;
-import com.example.message_app.model.Message;
 import com.example.message_app.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,11 +33,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.Normalizer;
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -257,7 +248,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(RegisterActivity.this,"Register Success",Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this,"Đăng ký thành công",Toast.LENGTH_LONG).show();
                     mUser=mAuth.getCurrentUser();
                     String userId=mUser.getUid();
 
@@ -280,7 +271,7 @@ public class RegisterActivity extends AppCompatActivity {
                     reference= FirebaseDatabase.getInstance().getReference("User").child(userId);
                     List<String> list = new ArrayList<String>();
                     list.add("");
-                    User user=new User(inputUserName.getText().toString(),"default",inputMoblie.getText().toString(),list,list);
+                    User user=new User(inputUserName.getText().toString(),"default",inputMoblie.getText().toString(),list,list, inputUserName.getText().toString().toLowerCase());
                     reference.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -290,7 +281,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                 }else {
-                    Toast.makeText(RegisterActivity.this,"Register faill",Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this,"Đăng ký thất bại",Toast.LENGTH_LONG).show();
                 }
             }
         });

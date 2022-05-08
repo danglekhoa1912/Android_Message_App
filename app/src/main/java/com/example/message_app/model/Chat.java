@@ -1,40 +1,54 @@
 package com.example.message_app.model;
 
 public class Chat {
-    private String id,userId;
-    private Message message;
+    private String imageUrl,mess,receiver,sender,timestamp;
 
-    public String getUserId() {
-        return userId;
+    public  Chat(){}
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public Chat(String id, String userId, Message message) {
-        this.id = id;
-        this.userId = userId;
-        this.message = message;
+    public String getMess() {
+        return mess;
     }
 
-    public String getId() {
-        return id;
+    public void setMess(String mess) {
+        this.mess = mess;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getReceiver() {
+        return receiver;
     }
 
-
-
-    public Message getMessage() {
-        return message;
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
-    public void setMessage(Message message) {
-        this.message = message;
+    public String getSender() {
+        return sender;
     }
 
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
 
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Chat(String imageUrl, String mess, String receiver, String sender, String timestamp) {
+        this.imageUrl = imageUrl;
+        this.mess = mess;
+        this.receiver = receiver;
+        this.sender = sender;
+        this.timestamp = timestamp;
+    }
 }
