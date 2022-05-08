@@ -8,12 +8,23 @@ public class User {
     private String userName,avatar,mobile;
     private List<String> listFriend,blockList;
 
-    public User(String userName, String avatar, String mobile, List<String> listFriend, List<String> blockList) {
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
+    }
+
+    private String search;
+
+    public User(String userName, String avatar, String mobile, List<String> listFriend, List<String> blockList,String search) {
         this.userName = userName;
         this.avatar = avatar;
         this.mobile = mobile;
         this.listFriend = listFriend;
         this.blockList = blockList;
+        this.search = search;
     }
 
     public  User(){}

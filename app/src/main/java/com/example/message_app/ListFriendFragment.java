@@ -56,9 +56,13 @@ public class ListFriendFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(!charSequence.toString().equals("")) {
-                    searchUsers(charSequence.toString());
+                if(!charSequence.toString().trim().equals("")) {
+                    searchUsers(charSequence.toString().trim().toLowerCase());
                 }
+                else{
+                    readFriendUsers();
+                }
+
             }
 
             @Override
@@ -72,15 +76,37 @@ public class ListFriendFragment extends Fragment {
 
     private void searchUsers(String input){
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseDatabase.getInstance().getReference("User").orderByChild("userName").startAt(input).endAt(input + "\uf8ff").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("User").orderByChild("search").startAt(input).endAt(input + "\uf8ff").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userIdList.clear();
                 if(snapshot.exists()){
                     for(DataSnapshot data: snapshot.getChildren()){
                         if(!data.getKey().equals(firebaseUser.getUid()))
-                            Log.d("User12", String.valueOf(data.getKey())+"...."+firebaseUser.getUid());
+                            userIdList.add(data.getKey());
                     }
                 }
+                //userAdapter = new UserAdapter(getContext(), userIdList);
+               // recyclerView.setAdapter(userAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        FirebaseDatabase.getInstance().getReference("User").orderByChild("mobile").startAt(input).endAt(input + "\uf8ff").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+              //  userIdList.clear();
+                if(snapshot.exists()){
+                    for(DataSnapshot data: snapshot.getChildren()){
+                        if(!data.getKey().equals(firebaseUser.getUid()))
+                            userIdList.add(data.getKey());
+                    }
+                }
+                userAdapter = new UserAdapter(getContext(), userIdList);
+                recyclerView.setAdapter(userAdapter);
             }
 
             @Override
@@ -98,13 +124,13 @@ public class ListFriendFragment extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(search_users.getText().toString().equals("")) {
+
                     userIdList.clear();
                     User userCurrent = dataSnapshot.getValue(User.class);
                     userIdList = userCurrent.getListFriend();
                     userAdapter = new UserAdapter(getContext(), userIdList);
                     recyclerView.setAdapter(userAdapter);
-                }
+
             }
 
             @Override
