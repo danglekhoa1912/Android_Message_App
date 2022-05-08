@@ -102,7 +102,7 @@ public class HomeActivity extends AppCompatActivity {
         textViewName=findViewById(R.id.textViewName);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         profile_image=findViewById(R.id.profile_image);
-        friend=findViewById(R.id.friend);
+        //friend=findViewById(R.id.friend);
     }
 
     @Override
