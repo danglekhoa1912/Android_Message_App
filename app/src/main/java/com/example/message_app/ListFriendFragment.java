@@ -56,7 +56,9 @@ public class ListFriendFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                searchUsers(charSequence.toString().toLowerCase());
+                if(!charSequence.toString().equals("")) {
+                    searchUsers(charSequence.toString());
+                }
             }
 
             @Override
@@ -70,23 +72,15 @@ public class ListFriendFragment extends Fragment {
 
     private void searchUsers(String input){
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        Query query = FirebaseDatabase.getInstance().getReference("User").orderByChild("username")
-                .startAt(input).endAt(input + "\uf8ff"); // uf8ff là tất cả ký tự Unicode
-
-        query.addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("User").orderByChild("userName").endAt(input + "\uf8ff").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                    userIdList.clear();
-                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                        User user = dataSnapshot.getValue(User.class);
-
-                        userIdList.add(user.toString());
-                        userAdapter = new UserAdapter(getContext(), userIdList);
-                        recyclerView.setAdapter(userAdapter);
+                if(snapshot.exists()){
+                    for(DataSnapshot data: snapshot.getChildren()){
+                        if(data.getKey()!=firebaseUser.getUid())
+                            Log.d("User12", String.valueOf(data.getKey())+"....");
                     }
-
-
+                }
             }
 
             @Override
@@ -94,6 +88,7 @@ public class ListFriendFragment extends Fragment {
 
             }
         });
+
     }
 
     private void readFriendUsers(){

@@ -46,6 +46,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         databaseListfriend.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 User user = snapshot.getValue(User.class);
                 holder.username.setText(user.getUserName());
                 if (user.getAvatar().equals("default")) {
