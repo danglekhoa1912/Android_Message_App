@@ -154,7 +154,6 @@ public class    MessageActivity extends AppCompatActivity {
                                 recyclerView.setAdapter(messageAdapter);
                             }
                             positionIdSender=ID_SENDER_LEFT;
-
                         }
 
                         @Override
