@@ -229,6 +229,34 @@ public class    MessageActivity extends AppCompatActivity {
                         }
                     });
                 }
+                reference =FirebaseDatabase.getInstance().getReference("User").child(sender);
+                reference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        HashMap<String,Object> hashMap=new HashMap<>();
+                        User user = snapshot.getValue(User.class);
+                        List<String> list;
+
+                        list = user.getListFriend();
+                        boolean flag = false;
+                        for (String a : list){
+                            if(a.equals(receiver))
+                                flag = true;
+                        }
+                        if(flag == false) {
+                            list.add(receiver);
+                            hashMap.put("listFriend",list);
+                            reference.updateChildren(hashMap);
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
 
             @Override
