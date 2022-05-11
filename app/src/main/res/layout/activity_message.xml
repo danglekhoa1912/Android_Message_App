@@ -18,6 +18,14 @@
             android:id="@+id/toolbar"
             app:popupTheme="@style/Widget.AppCompat.PopupMenu"
             >
+            <ImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_action_back"
+                android:layout_marginRight="20dp"
+                android:background="@color/primary"
+                android:id="@+id/btn_back"
+                />
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
