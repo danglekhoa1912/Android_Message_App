@@ -1,11 +1,15 @@
 package com.example.message_app;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.example.message_app.Adapter.MessageAdapter;
 import com.example.message_app.model.Chat;
 import com.example.message_app.model.User;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +32,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +50,7 @@ public class    MessageActivity extends AppCompatActivity {
 
     CircleImageView profile_image;
     TextView userName;
-    ImageButton btn_send;
+    ImageButton btn_send,btn_sendImage;
     EditText text_view;
 
     FirebaseUser mUser;
@@ -54,6 +62,9 @@ public class    MessageActivity extends AppCompatActivity {
     List<Chat> mchat;
     RecyclerView recyclerView;
 
+    ActivityResultLauncher<String> mTakePhoto;
+    FirebaseStorage storage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,14 +72,38 @@ public class    MessageActivity extends AppCompatActivity {
 
         AnhXa();
 
+        String userId=intent.getStringExtra("userId");
+        mUser= FirebaseAuth.getInstance().getCurrentUser();
+        reference=FirebaseDatabase.getInstance().getReference("User").child(userId);
+        storage=FirebaseStorage.getInstance();
+
+        mTakePhoto=registerForActivityResult(
+                new ActivityResultContracts.GetContent(),
+                new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri result) {
+                        if(result!=null){
+                            final StorageReference referenceStore=storage.getReference("ImageMess").child(result.getLastPathSegment());
+                            referenceStore.putFile(result).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    referenceStore.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            SendMessage(mUser.getUid(),userId,"",uri.toString());
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    }
+                }
+        );
+
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
-
-        String userId=intent.getStringExtra("userId");
-        mUser= FirebaseAuth.getInstance().getCurrentUser();
-        reference=FirebaseDatabase.getInstance().getReference("User").child(userId);
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -105,6 +140,13 @@ public class    MessageActivity extends AppCompatActivity {
             }
         });
 
+        btn_sendImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mTakePhoto.launch("image/*");
+            }
+        });
+
     }
 
     private void AnhXa(){
@@ -113,6 +155,7 @@ public class    MessageActivity extends AppCompatActivity {
         btn_send=findViewById(R.id.btn_send);
         text_view=findViewById(R.id.text_send);
         recyclerView=findViewById(R.id.recycler_view);
+        btn_sendImage=findViewById(R.id.btn_sendImage);
 
         intent=getIntent();
     }
@@ -125,6 +168,8 @@ public class    MessageActivity extends AppCompatActivity {
         hashMap.put("mess",mess);
         hashMap.put("imageUrl",imageUrl);
         hashMap.put("timestamp",String.valueOf(System.currentTimeMillis()));
+        hashMap.put("status","sent");
+        Log.d("send", sender+"-"+receiver);
         if(positionIdSender==ID_SENDER_LEFT){
             reference.child(sender+"_"+receiver).push().setValue(hashMap);
         }

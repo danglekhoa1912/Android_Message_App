@@ -48,12 +48,22 @@
         android:id="@+id/bottom"
         >
 
+        <ImageButton
+            android:id="@+id/btn_sendImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/ic_action_camera" />
+
         <EditText
             android:id="@+id/text_send"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/btn_send"
+            android:layout_toRightOf="@+id/btn_sendImage"
             android:background="@color/whiteGray"
             android:hint="Type a message..." />
 

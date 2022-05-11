@@ -10,5 +10,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rcv_chat"/>
+        android:id="@+id/rcv_chat"
+        android:paddingHorizontal="20dp"
+        />
 </FrameLayout>

@@ -1,7 +1,7 @@
 package com.example.message_app.model;
 
 public class Chat {
-    private String imageUrl,mess,receiver,sender,timestamp;
+    private String imageUrl,mess,receiver,sender,timestamp,status;
 
     public  Chat(){}
     public String getImageUrl() {
@@ -44,11 +44,20 @@ public class Chat {
         this.timestamp = timestamp;
     }
 
-    public Chat(String imageUrl, String mess, String receiver, String sender, String timestamp) {
+    public Chat(String imageUrl, String mess, String receiver, String sender, String timestamp, String status) {
         this.imageUrl = imageUrl;
         this.mess = mess;
         this.receiver = receiver;
         this.sender = sender;
         this.timestamp = timestamp;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

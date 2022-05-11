@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,9 +47,12 @@ public class ChatFragment extends Fragment {
     private String mParam2;
 
     private FirebaseAuth mAuth;
+    private int i=0;
     private DatabaseReference reference;
+    private DataSnapshot dataSnapshot;
     private UserItemChatAdapter UserItemChatAdapter;
-    private List<String> userIdList;
+    private List<String> userIdList=new ArrayList<String>();
+    private String uid;
 
 
     public ChatFragment() {
@@ -98,9 +103,35 @@ public class ChatFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 //userIdList.clear();
                 User userCurrent = dataSnapshot.getValue(User.class);
-                userIdList=userCurrent.getListFriend();
-                UserItemChatAdapter = new UserItemChatAdapter(getContext(), userIdList);
-                rcv.setAdapter(UserItemChatAdapter);
+                FirebaseDatabase.getInstance().getReference("chat_rooms").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        int j = 0;
+                        userIdList.clear();
+                        for(DataSnapshot snapshot1:snapshot.getChildren()){
+                            Log.d("snap", snapshot1.getKey());
+                            if(snapshot1.getKey().contains(firebaseUser.getUid())){
+                                String id= snapshot1.getKey().replace(firebaseUser.getUid(), "");
+                                id=id.replace("_","");
+                                Log.d("id", id);
+                                userIdList.add(id);
+                                j=userIdList.size();
+                            }
+                        }
+                        if (j!=i || j!=0){
+                            UserItemChatAdapter = new UserItemChatAdapter(getContext(), userIdList);
+                            rcv.setAdapter(UserItemChatAdapter);
+                            i=j;
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                //userIdList=userCurrent.getListFriend();
+
             }
 
             @Override
