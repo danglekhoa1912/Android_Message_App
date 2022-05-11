@@ -50,18 +50,19 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
                 User user = snapshot.getValue(User.class);
                 holder.username.setText(user.getUserName());
+                Log.d("hello", user.getAvatar()+user.getUserName());
                 if (user.getAvatar().equals("default")) {
                     holder.profile_image.setImageResource(R.mipmap.ic_launcher);
                 } else {
-                    Log.d("avatar",user.getAvatar());
+                    Log.d("avatar", user.getAvatar());
                     Glide.with(context).load(user.getAvatar()).into(holder.profile_image);
                 }
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Intent intent = new Intent(context, MessageActivity.class);
-                intent.putExtra("userId",userIdList.get(holder.getAdapterPosition()));
-                context.startActivity(intent);
+                        intent.putExtra("userId", userIdList.get(holder.getAdapterPosition()));
+                        context.startActivity(intent);
                     }
                 });
             }
