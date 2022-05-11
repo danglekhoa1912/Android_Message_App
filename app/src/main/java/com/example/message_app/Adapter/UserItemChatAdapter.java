@@ -127,7 +127,7 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                                     holder.user_chat.setTypeface(null, Typeface.NORMAL);
                                     holder.user_chat.setText("Bạn: " + chat.getMess());
                                 } else {
-                                    holder.user_chat.setText(holder.user_name.getText().toString() + ":" + chat.getMess());
+                                    holder.user_chat.setText(holder.user_name.getText().toString() + ": " + chat.getMess());
                                     if (chat.getStatus().equals("sent")) {
                                         holder.user_chat.setTypeface(null, Typeface.BOLD);
                                         Toast.makeText(context, "Bạn có tin nhắn mời từ " + holder.user_name.getText().toString(), Toast.LENGTH_SHORT).show();
@@ -184,17 +184,18 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                         key[2]="false";
                         Chat chat =snapshot_chat_right==null?new Chat("","","","","",""): snapshot_chat_right.getValue(Chat.class);
                         if (chat.getStatus().equals("sent") && chat.getSender().equals(uid2)&&snapshot_chat_right!=null) {
-                            Log.d("number 2", "onDataChange: " + snapshot_chat_right.getKey());
                             key[0] = snapshot_chat_right.getKey();
                             key[1] =uid2+"_"+uid;
                             key[2] = "true";
+                            Log.d("1   ", key.toString());
                         }
                         chat = snapshot_chat_left==null?new Chat("","","","","",""):snapshot_chat_left.getValue(Chat.class);
+                        Log.d(TAG, String.valueOf(chat));
                         if (chat.getStatus().equals("sent") && chat.getSender().equals(uid2)&&snapshot_chat_left!=null) {
-                            Log.d("number 2", "onDataChange: " + snapshot_chat_left.getKey());
                             key[0] = snapshot_chat_left.getKey();
                             key[1] =uid+"_"+uid2;
                             key[2] = "true";
+                            Log.d("2    ", key.toString());
                         }
                         if (key[2].equals("true")) {
                             Map<String, Object> change = new HashMap<>();
