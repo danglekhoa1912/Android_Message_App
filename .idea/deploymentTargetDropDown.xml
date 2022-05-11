@@ -7,7 +7,7 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\giahu\.android\avd\6.7_Horizontal_Fold-in_API_30.avd" />
+            <value value="C:\Users\Admin\.android\avd\Pixel_5_API_30_1.avd" />
           </Key>
         </deviceKey>
       </Target>
