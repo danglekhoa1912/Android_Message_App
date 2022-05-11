@@ -50,7 +50,7 @@ public class    MessageActivity extends AppCompatActivity {
 
     CircleImageView profile_image;
     TextView userName;
-    ImageButton btn_send,btn_sendImage;
+    ImageButton btn_send,btn_sendImage,btn_back;
     EditText text_view;
 
     FirebaseUser mUser;
@@ -147,6 +147,12 @@ public class    MessageActivity extends AppCompatActivity {
             }
         });
 
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     private void AnhXa(){
@@ -156,6 +162,7 @@ public class    MessageActivity extends AppCompatActivity {
         text_view=findViewById(R.id.text_send);
         recyclerView=findViewById(R.id.recycler_view);
         btn_sendImage=findViewById(R.id.btn_sendImage);
+        btn_back=findViewById(R.id.btn_back);
 
         intent=getIntent();
     }
