@@ -243,11 +243,12 @@ public class    MessageActivity extends AppCompatActivity {
                             if(a.equals(receiver))
                                 flag = true;
                         }
-                        if(flag = false) {
+                        if(flag == false) {
                             list.add(receiver);
                             hashMap.put("listFriend",list);
                             reference.updateChildren(hashMap);
                         }
+
 
                     }
 
@@ -256,9 +257,7 @@ public class    MessageActivity extends AppCompatActivity {
 
                     }
                 });
-
             }
-
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
