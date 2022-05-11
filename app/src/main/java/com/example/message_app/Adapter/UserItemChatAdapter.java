@@ -43,6 +43,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapter.ViewHolder> {
     private Context context;
     private List<String> userIdList;
@@ -222,7 +224,7 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView img_avatar;
+        private CircleImageView img_avatar;
         private TextView user_name, user_chat;
 
         public ViewHolder(@NonNull View itemView) {
