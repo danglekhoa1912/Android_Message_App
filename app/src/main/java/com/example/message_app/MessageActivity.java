@@ -168,6 +168,8 @@ public class    MessageActivity extends AppCompatActivity {
         hashMap.put("mess",mess);
         hashMap.put("imageUrl",imageUrl);
         hashMap.put("timestamp",String.valueOf(System.currentTimeMillis()));
+        hashMap.put("status","sent");
+        Log.d("send", sender+"-"+receiver);
         if(positionIdSender==ID_SENDER_LEFT){
             reference.child(sender+"_"+receiver).push().setValue(hashMap);
         }
