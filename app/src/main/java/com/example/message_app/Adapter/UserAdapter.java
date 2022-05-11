@@ -3,6 +3,7 @@ package com.example.message_app.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                 if (user.getAvatar().equals("default")) {
                     holder.profile_image.setImageResource(R.mipmap.ic_launcher);
                 } else {
+                    Log.d("avatar",user.getAvatar());
                     Glide.with(context).load(user.getAvatar()).into(holder.profile_image);
                 }
                 holder.itemView.setOnClickListener(new View.OnClickListener() {

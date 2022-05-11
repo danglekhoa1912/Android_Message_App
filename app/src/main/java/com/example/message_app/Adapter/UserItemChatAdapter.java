@@ -27,6 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapter.ViewHolder> {
     private Context context;
     private List<String> userIdList;
@@ -87,9 +89,21 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
 
                                 Chat chat = snapshot1.getValue(Chat.class);
                                 if (chat.getSender().equals(uid)) {
-                                    holder.user_chat.setText("Bạn: " + chat.getMess());
-                                } else {
-                                    holder.user_chat.setText(holder.user_name.getText().toString() +":"+ chat.getMess());
+                                    if(chat.getImageUrl().equals("")){
+                                        holder.user_chat.setText("Bạn: " + chat.getMess());
+                                    }
+                                    else {
+                                        holder.user_chat.setText("Bạn:Đã gửi một bức ảnh");
+                                    }
+                                }
+
+                                else {
+                                    if(chat.getImageUrl().equals("")){
+                                        holder.user_chat.setText(holder.user_name.getText().toString() +":"+ chat.getMess());
+                                    }
+                                    else {
+                                        holder.user_chat.setText(holder.user_name.getText().toString() +":Đã gửi một bức ảnh");
+                                    }
                                 }
                             }
                         }
@@ -131,7 +145,7 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView img_avatar;
+        private CircleImageView img_avatar;
         private TextView user_name, user_chat;
 
         public ViewHolder(@NonNull View itemView) {
