@@ -109,7 +109,6 @@ public class ChatFragment extends Fragment {
                         int j = 0;
                         userIdList.clear();
                         for(DataSnapshot snapshot1:snapshot.getChildren()){
-                            Log.d("snap", snapshot1.getKey());
                             if(snapshot1.getKey().contains(firebaseUser.getUid())){
                                 String id= snapshot1.getKey().replace(firebaseUser.getUid(), "");
                                 id=id.replace("_","");
@@ -130,7 +129,6 @@ public class ChatFragment extends Fragment {
 
                     }
                 });
-                //userIdList=userCurrent.getListFriend();
 
             }
 
@@ -139,23 +137,6 @@ public class ChatFragment extends Fragment {
 
             }
         });
-//        reference= FirebaseDatabase.getInstance().getReference("User").child(mAuth.getCurrentUser().getUid());
-//
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                User user=snapshot.getValue(User.class);
-//                textViewName.setText(user.getListFriend().get(1));
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-
-
-
         return view;
     }
 }
