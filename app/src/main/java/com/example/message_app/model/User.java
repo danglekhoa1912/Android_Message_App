@@ -8,6 +8,16 @@ public class User {
     private String userName,avatar,mobile;
     private List<String> listFriend,blockList;
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    private String status; //off //onl
+
     public String getSearch() {
         return search;
     }
@@ -18,13 +28,14 @@ public class User {
 
     private String search;
 
-    public User(String userName, String avatar, String mobile, List<String> listFriend, List<String> blockList,String search) {
+    public User(String userName, String avatar, String mobile, List<String> listFriend, List<String> blockList,String search, String status) {
         this.userName = userName;
         this.avatar = avatar;
         this.mobile = mobile;
         this.listFriend = listFriend;
         this.blockList = blockList;
         this.search = search;
+        this.status = status;
     }
 
     public  User(){}
