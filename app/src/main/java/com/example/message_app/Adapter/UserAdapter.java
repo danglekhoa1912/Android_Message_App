@@ -28,10 +28,12 @@ import java.util.List;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private Context context;
     private List<String> userIdList;
+    private boolean isChat;
 
-    public UserAdapter(Context context, List<String> userIdList) {
+    public UserAdapter(Context context, List<String> userIdList,boolean isChat) {
         this.context = context;
         this.userIdList = userIdList;
+        this.isChat = isChat;
     }
 
     @NonNull
@@ -56,6 +58,18 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                 } else {
                     Log.d("avatar", user.getAvatar());
                     Glide.with(context).load(user.getAvatar()).into(holder.profile_image);
+                }
+                if(isChat){
+                    if(user.getStatus().equals("online")){
+                        holder.img_onl.setVisibility(View.VISIBLE);
+                        holder.img_off.setVisibility(View.GONE);
+                    }else{
+                        holder.img_onl.setVisibility(View.GONE);
+                        holder.img_off.setVisibility(View.VISIBLE);
+                    }
+                }else{
+                    holder.img_onl.setVisibility(View.GONE);
+                    holder.img_off.setVisibility(View.GONE);
                 }
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -83,11 +97,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView username;
         public ImageView profile_image;
+        public ImageView img_onl;
+        public ImageView img_off;
 
         public ViewHolder(View view) {
             super(view);
             username = view.findViewById(R.id.username);
             profile_image = view.findViewById(R.id.profile_image);
+            img_off = view.findViewById(R.id.img_off);
+            img_onl = view.findViewById(R.id.img_onl);
         }
     }
+
 }

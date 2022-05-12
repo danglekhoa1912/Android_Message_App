@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeActivity extends AppCompatActivity {
@@ -32,6 +34,8 @@ public class HomeActivity extends AppCompatActivity {
     private DatabaseReference reference;
     private TextView textViewName,friend;
     private CircleImageView profile_image;
+
+    FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
 
 
     @Override
@@ -121,5 +125,26 @@ public class HomeActivity extends AppCompatActivity {
                 return true;
         }
         return false;
+    }
+
+
+    private void status(String status){
+        reference = FirebaseDatabase.getInstance().getReference("User").child(mUser.getUid());
+        HashMap<String, Object> hashMap = new HashMap<>();
+
+        hashMap.put("status", status);
+        reference.updateChildren(hashMap);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        status("online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        status("offline");
     }
 }
