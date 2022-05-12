@@ -119,7 +119,7 @@ public class ChatFragment extends Fragment {
                             }
                         }
                         if (j!=i ){
-                            UserItemChatAdapter = new UserItemChatAdapter(getContext(), userIdList);
+                            UserItemChatAdapter = new UserItemChatAdapter(getContext(), userIdList,true);
                             rcv.setAdapter(UserItemChatAdapter);
                             i=j;
                         }

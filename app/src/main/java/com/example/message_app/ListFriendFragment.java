@@ -105,7 +105,7 @@ public class ListFriendFragment extends Fragment {
                             userIdList.add(data.getKey());
                     }
                 }
-                userAdapter = new UserAdapter(getContext(), userIdList);
+                userAdapter = new UserAdapter(getContext(), userIdList,true);
                 recyclerView.setAdapter(userAdapter);
             }
 
@@ -128,7 +128,7 @@ public class ListFriendFragment extends Fragment {
                     userIdList.clear();
                     User userCurrent = dataSnapshot.getValue(User.class);
                     userIdList = userCurrent.getListFriend();
-                    userAdapter = new UserAdapter(getContext(), userIdList);
+                    userAdapter = new UserAdapter(getContext(), userIdList,true);
                     recyclerView.setAdapter(userAdapter);
 
             }

@@ -52,6 +52,7 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
     FirebaseUser mUser;
     String uid;
     DataSnapshot snapshot_chat_left,snapshot_chat_right;
+    private boolean isChat;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static void noti() {
@@ -67,11 +68,13 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
         sp.play(R.raw.noti, 1, 1, 1, 0, 1f);
     }
 
-    public UserItemChatAdapter(Context context, List<String> userIdList) {
+
+
+    public UserItemChatAdapter(Context context, List<String> userIdList,boolean isChat) {
         this.context = context;
         this.userIdList = userIdList;
+        this.isChat =isChat;
     }
-
     @NonNull
     @Override
     public UserItemChatAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -146,6 +149,18 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                     holder.img_avatar.setImageResource(R.mipmap.ic_launcher);
                 } else {
                     Glide.with(context).load(user.getAvatar()).into(holder.img_avatar);
+                }
+                if(isChat){
+                    if(user.getStatus().equals("online")){
+                        holder.img_onl.setVisibility(View.VISIBLE);
+                        holder.img_off.setVisibility(View.GONE);
+                    }else{
+                        holder.img_onl.setVisibility(View.GONE);
+                        holder.img_off.setVisibility(View.VISIBLE);
+                    }
+                }else{
+                    holder.img_onl.setVisibility(View.GONE);
+                    holder.img_off.setVisibility(View.GONE);
                 }
                 FirebaseDatabase.getInstance().getReference("chat_rooms").child(uid + "_" + uid2).orderByKey().limitToLast(1).addValueEventListener(new ValueEventListener() {
                     @Override
@@ -224,15 +239,21 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
         return 0;
     }
 
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private CircleImageView img_avatar;
         private TextView user_name, user_chat;
+        public ImageView img_onl;
+        public ImageView img_off;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             img_avatar = itemView.findViewById(R.id.img_avatar);
             user_name = itemView.findViewById(R.id.user_name);
             user_chat = itemView.findViewById(R.id.user_chat);
+            img_off = itemView.findViewById(R.id.img_off);
+            img_onl = itemView.findViewById(R.id.img_onl);
         }
     }
 }
