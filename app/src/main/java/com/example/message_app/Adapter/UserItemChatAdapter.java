@@ -39,6 +39,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +53,7 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
     final String[] key = new String[3];
     FirebaseUser mUser;
     String uid;
-    DataSnapshot snapshot_chat_left,snapshot_chat_right;
+    DataSnapshot snapshot_chat_left, snapshot_chat_right;
     private boolean isChat;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -69,12 +71,18 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
     }
 
 
-
-    public UserItemChatAdapter(Context context, List<String> userIdList,boolean isChat) {
+    public UserItemChatAdapter(Context context, List<String> userIdList, boolean isChat) {
         this.context = context;
         this.userIdList = userIdList;
-        this.isChat =isChat;
+        this.isChat = isChat;
     }
+
+    private String converTime(Long t1) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+        Date date1 = new Date(t1);
+        return date1.getHours()+" : "+date1.getMinutes();
+    }
+
     @NonNull
     @Override
     public UserItemChatAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -100,12 +108,13 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                         if (snapshot.exists()) {
                             for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                                 Chat chat = snapshot1.getValue(Chat.class);
-                                Log.d("status", " " + chat.getSender());
                                 if (chat.getSender().equals(uid)) {
                                     holder.user_chat.setTypeface(null, Typeface.NORMAL);
                                     holder.user_chat.setText("Bạn: " + chat.getMess());
+                                    holder.time.setText(converTime(Long.parseLong(chat.getTimestamp())));
                                 } else {
                                     holder.user_chat.setText(holder.user_name.getText().toString() + ":" + chat.getMess());
+                                    holder.time.setText(converTime(Long.parseLong(chat.getTimestamp())));
                                     if (chat.getStatus().equals("sent")) {
                                         holder.user_chat.setTypeface(null, Typeface.BOLD);
                                         Toast.makeText(context, "Bạn có tin nhắn mời từ " + holder.user_name.getText().toString(), Toast.LENGTH_SHORT).show();
@@ -129,8 +138,10 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                                 if (chat.getSender().equals(uid)) {
                                     holder.user_chat.setTypeface(null, Typeface.NORMAL);
                                     holder.user_chat.setText("Bạn: " + chat.getMess());
+                                    holder.time.setText(converTime(Long.parseLong(chat.getTimestamp())));
                                 } else {
                                     holder.user_chat.setText(holder.user_name.getText().toString() + ": " + chat.getMess());
+                                    holder.time.setText(converTime(Long.parseLong(chat.getTimestamp())));
                                     if (chat.getStatus().equals("sent")) {
                                         holder.user_chat.setTypeface(null, Typeface.BOLD);
                                         Toast.makeText(context, "Bạn có tin nhắn mời từ " + holder.user_name.getText().toString(), Toast.LENGTH_SHORT).show();
@@ -150,15 +161,15 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                 } else {
                     Glide.with(context).load(user.getAvatar()).into(holder.img_avatar);
                 }
-                if(isChat){
-                    if(user.getStatus().equals("online")){
+                if (isChat) {
+                    if (user.getStatus().equals("online")) {
                         holder.img_onl.setVisibility(View.VISIBLE);
                         holder.img_off.setVisibility(View.GONE);
-                    }else{
+                    } else {
                         holder.img_onl.setVisibility(View.GONE);
                         holder.img_off.setVisibility(View.VISIBLE);
                     }
-                }else{
+                } else {
                     holder.img_onl.setVisibility(View.GONE);
                     holder.img_off.setVisibility(View.GONE);
                 }
@@ -196,19 +207,19 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        key[2]="false";
-                        Chat chat =snapshot_chat_right==null?new Chat("","","","","",""): snapshot_chat_right.getValue(Chat.class);
-                        if (chat.getStatus().equals("sent") && chat.getSender().equals(uid2)&&snapshot_chat_right!=null) {
+                        key[2] = "false";
+                        Chat chat = snapshot_chat_right == null ? new Chat("", "", "", "", "", "") : snapshot_chat_right.getValue(Chat.class);
+                        if (chat.getStatus().equals("sent") && chat.getSender().equals(uid2) && snapshot_chat_right != null) {
                             key[0] = snapshot_chat_right.getKey();
-                            key[1] =uid2+"_"+uid;
+                            key[1] = uid2 + "_" + uid;
                             key[2] = "true";
                             Log.d("1   ", key.toString());
                         }
-                        chat = snapshot_chat_left==null?new Chat("","","","","",""):snapshot_chat_left.getValue(Chat.class);
+                        chat = snapshot_chat_left == null ? new Chat("", "", "", "", "", "") : snapshot_chat_left.getValue(Chat.class);
                         Log.d(TAG, String.valueOf(chat));
-                        if (chat.getStatus().equals("sent") && chat.getSender().equals(uid2)&&snapshot_chat_left!=null) {
+                        if (chat.getStatus().equals("sent") && chat.getSender().equals(uid2) && snapshot_chat_left != null) {
                             key[0] = snapshot_chat_left.getKey();
-                            key[1] =uid+"_"+uid2;
+                            key[1] = uid + "_" + uid2;
                             key[2] = "true";
                             Log.d("2    ", key.toString());
                         }
@@ -240,10 +251,9 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
     }
 
 
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         private CircleImageView img_avatar;
-        private TextView user_name, user_chat;
+        private TextView user_name, user_chat, time;
         public ImageView img_onl;
         public ImageView img_off;
 
@@ -254,6 +264,7 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
             user_chat = itemView.findViewById(R.id.user_chat);
             img_off = itemView.findViewById(R.id.img_off);
             img_onl = itemView.findViewById(R.id.img_onl);
+            time = itemView.findViewById(R.id.time);
         }
     }
 }
