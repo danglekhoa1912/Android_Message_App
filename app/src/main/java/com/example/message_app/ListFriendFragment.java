@@ -105,8 +105,8 @@ public class ListFriendFragment extends Fragment {
                             userIdList.add(data.getKey());
                     }
                 }
-                userAdapter = new UserAdapter(getContext(), userIdList,true);
-                recyclerView.setAdapter(userAdapter);
+                    userAdapter = new UserAdapter(getContext(), userIdList,true);
+                    recyclerView.setAdapter(userAdapter);
             }
 
             @Override
@@ -124,10 +124,10 @@ public class ListFriendFragment extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                     userIdList.clear();
                     User userCurrent = dataSnapshot.getValue(User.class);
-                    userIdList = userCurrent.getListFriend();
+                    if(userCurrent.getListFriend()!=null)
+                        userIdList = userCurrent.getListFriend();
                     userAdapter = new UserAdapter(getContext(), userIdList,true);
                     recyclerView.setAdapter(userAdapter);
 

@@ -114,7 +114,7 @@ public class    MessageActivity extends AppCompatActivity {
                     profile_image.setImageResource(R.mipmap.ic_launcher);
                 }
                 else{
-                    Glide.with(MessageActivity.this).load(user.getAvatar()).into(profile_image);
+                    Glide.with(getApplicationContext()).load(user.getAvatar()).into(profile_image);
                 }
                 ReadMessage(mUser.getUid(),userId,user.getAvatar());
             }
@@ -176,7 +176,6 @@ public class    MessageActivity extends AppCompatActivity {
         hashMap.put("imageUrl",imageUrl);
         hashMap.put("timestamp",String.valueOf(System.currentTimeMillis()));
         hashMap.put("status","sent");
-        Log.d("send", sender+"-"+receiver);
         if(positionIdSender==ID_SENDER_LEFT){
             reference.child(sender+"_"+receiver).push().setValue(hashMap);
         }
@@ -242,9 +241,9 @@ public class    MessageActivity extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         HashMap<String,Object> hashMap=new HashMap<>();
                         User user = snapshot.getValue(User.class);
-                        List<String> list;
-
-                        list = user.getListFriend();
+                        List<String> list =new ArrayList<>();
+                        if(user.getListFriend()!=null)
+                            list = user.getListFriend();
                         boolean flag = false;
                         for (String a : list){
                             if(a.equals(receiver))
