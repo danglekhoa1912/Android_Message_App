@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Message_App"
         android:usesCleartextTraffic="true">
         <activity
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
             android:name=".MessageActivity"
             android:exported="false" />
         <activity
