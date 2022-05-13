@@ -3,12 +3,17 @@ package com.example.message_app.Adapter;
 import static android.content.ContentValues.TAG;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
+import android.media.RingtoneManager;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Build;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,6 +28,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -44,6 +50,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -56,19 +63,19 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
     DataSnapshot snapshot_chat_left, snapshot_chat_right;
     private boolean isChat;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public static void noti() {
-        AudioAttributes attrs = new AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                .build();
-        AudioManager audioManager;
-        SoundPool sp = new SoundPool.Builder()
-                .setMaxStreams(10)
-                .setAudioAttributes(attrs)
-                .build();
-        sp.play(R.raw.noti, 1, 1, 1, 0, 1f);
-    }
+//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//    public static void noti() {
+//        AudioAttributes attrs = new AudioAttributes.Builder()
+//                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+//                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+//                .build();
+//        AudioManager audioManager;
+//        SoundPool sp = new SoundPool.Builder()
+//                .setMaxStreams(10)
+//                .setAudioAttributes(attrs)
+//                .build();
+//        sp.play(R.raw.noti, 1, 1, 1, 0, 1f);
+//    }
 
 
     public UserItemChatAdapter(Context context, List<String> userIdList, boolean isChat) {
@@ -89,6 +96,17 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         uid = mUser.getUid();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_chat_item, parent, false);
+
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            AudioAttributes attributes=new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).build();
+
+            NotificationChannel channel=new NotificationChannel("My Notification","My Notification",NotificationManager.IMPORTANCE_HIGH);
+            channel.setSound(uri,attributes);
+            NotificationManager manager= context.getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+
         return new UserItemChatAdapter.ViewHolder(view);
     }
 
@@ -99,7 +117,6 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
-                //Log.d("user",String.valueOf(snapshot));
                 holder.user_name.setText(user.getUserName());
                 String uid2 = snapshot.getKey();
                 FirebaseDatabase.getInstance().getReference("chat_rooms").child(uid + "_" + uid2).orderByKey().limitToLast(1).addValueEventListener(new ValueEventListener() {
@@ -117,7 +134,7 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                                     holder.time.setText(converTime(Long.parseLong(chat.getTimestamp())));
                                     if (chat.getStatus().equals("sent")) {
                                         holder.user_chat.setTypeface(null, Typeface.BOLD);
-                                        Toast.makeText(context, "Bạn có tin nhắn mời từ " + holder.user_name.getText().toString(), Toast.LENGTH_SHORT).show();
+                                        sendNotification(holder,chat);
                                     } else holder.user_chat.setTypeface(null, Typeface.NORMAL);
                                 }
                             }
@@ -144,7 +161,7 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                                     holder.time.setText(converTime(Long.parseLong(chat.getTimestamp())));
                                     if (chat.getStatus().equals("sent")) {
                                         holder.user_chat.setTypeface(null, Typeface.BOLD);
-                                        Toast.makeText(context, "Bạn có tin nhắn mời từ " + holder.user_name.getText().toString(), Toast.LENGTH_SHORT).show();
+                                        sendNotification(holder,chat);
                                     } else holder.user_chat.setTypeface(null, Typeface.NORMAL);
                                 }
                             }
@@ -213,15 +230,14 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                             key[0] = snapshot_chat_right.getKey();
                             key[1] = uid2 + "_" + uid;
                             key[2] = "true";
-                            Log.d("1   ", key.toString());
                         }
+
                         chat = snapshot_chat_left == null ? new Chat("", "", "", "", "", "") : snapshot_chat_left.getValue(Chat.class);
                         Log.d(TAG, String.valueOf(chat));
                         if (chat.getStatus().equals("sent") && chat.getSender().equals(uid2) && snapshot_chat_left != null) {
                             key[0] = snapshot_chat_left.getKey();
                             key[1] = uid + "_" + uid2;
                             key[2] = "true";
-                            Log.d("2    ", key.toString());
                         }
                         if (key[2].equals("true")) {
                             Map<String, Object> change = new HashMap<>();
@@ -267,4 +283,24 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
             time = itemView.findViewById(R.id.time);
         }
     }
+
+    public void sendNotification(UserItemChatAdapter.ViewHolder holder,Chat chat){
+
+        Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Intent notifyIntent = new Intent(context, MessageActivity.class);
+        notifyIntent.putExtra("userId", userIdList.get(holder.getAdapterPosition()));
+        PendingIntent notifyPendingIntent=PendingIntent.getActivity(context,new Random().nextInt(),notifyIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Builder builder=new NotificationCompat.Builder(context,"My Notification");
+        builder.setContentTitle("Bạn có tin nhắn mời từ " + holder.user_name.getText().toString());
+        builder.setContentText(chat.getMess());
+        builder.setSmallIcon(R.drawable.ic_launcher_background);
+        builder.setAutoCancel(true);
+        builder.setSound(uri);
+        builder.setPriority(NotificationCompat.PRIORITY_MAX);
+        builder.setContentIntent(notifyPendingIntent);
+
+        NotificationManagerCompat.from(context).notify(new Random().nextInt(),builder.build());
+    }
+
 }
