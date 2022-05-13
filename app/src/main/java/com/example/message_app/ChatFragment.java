@@ -1,6 +1,5 @@
 package com.example.message_app;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,12 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.example.message_app.Adapter.UserAdapter;
 import com.example.message_app.Adapter.UserItemChatAdapter;
+import com.example.message_app.model.Chat;
 import com.example.message_app.model.User;
+import com.example.message_app.model.userList;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +25,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,7 +52,7 @@ public class ChatFragment extends Fragment {
     private DatabaseReference reference;
     private DataSnapshot dataSnapshot;
     private UserItemChatAdapter UserItemChatAdapter;
-    private List<String> userIdList=new ArrayList<String>();
+    private List<userList> userIdList=new ArrayList<userList>();
     private String uid;
 
 
@@ -75,6 +76,12 @@ public class ChatFragment extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    private boolean compareTime(Long t1,long t2){
+        Date date1=new Date(t1);
+        Date date2=new Date(t2);
+        return date1.before(date2);
     }
 
     @Override
@@ -106,23 +113,65 @@ public class ChatFragment extends Fragment {
                 FirebaseDatabase.getInstance().getReference("chat_rooms").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        int j = 0;
                         userIdList.clear();
                         for(DataSnapshot snapshot1:snapshot.getChildren()){
-                            Log.d("snap", snapshot1.getKey());
                             if(snapshot1.getKey().contains(firebaseUser.getUid())){
                                 String id= snapshot1.getKey().replace(firebaseUser.getUid(), "");
                                 id=id.replace("_","");
-                                Log.d("id", id);
-                                userIdList.add(id);
-                                j=userIdList.size();
+                                userList us=new userList(id, snapshot1.getKey(), 0L);
+                                userIdList.add(us);
                             }
                         }
-                        if (j!=i ){
-                            UserItemChatAdapter = new UserItemChatAdapter(getContext(), userIdList,true);
+                        for (int j = 0; j < userIdList.size(); j++) {
+                            int finalJ = j;
+                            final int[] finali = {0};
+                            FirebaseDatabase.getInstance().getReference("chat_rooms").child(userIdList.get(j).getChat()).orderByKey().limitToLast(1).addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for (DataSnapshot snapshot1:snapshot.getChildren()) {
+                                        Chat chat=snapshot1.getValue(Chat.class);
+                                        userIdList.get(finalJ).setTime(Long.parseLong(chat.getTimestamp()));
+                                    }
+                                    boolean isChange = false;
+                                    if (finalJ==userIdList.size()-1){
+                                        for (int k = 0; k < userIdList.size()-1; k++) {
+                                            for (int l = k; l < userIdList.size(); l++) {
+                                                if (compareTime(userIdList.get(k).getTime(),userIdList.get(l).getTime())){
+                                                    Collections.swap(userIdList,l,k);
+                                                    isChange=true;
+                                                    Log.d("isChange", String.valueOf(isChange));
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (isChange || finali[0] !=finalJ){
+                                        List<String> idList=new ArrayList<String>();
+                                        for (userList us:
+                                                userIdList) {
+                                            idList.add(us.getId());
+                                        }
+                                        UserItemChatAdapter = new UserItemChatAdapter(getContext(), idList,true);
+                                        rcv.setAdapter(UserItemChatAdapter);
+                                        finali[0] =finalJ;
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
+                        /*if (i!=j ){
+                            List<String> idList=new ArrayList<String>();
+                            for (userList us:
+                                 userIdList) {
+                                idList.add(us.getId());
+                            }
+                            UserItemChatAdapter = new UserItemChatAdapter(getContext(), idList,true);
                             rcv.setAdapter(UserItemChatAdapter);
                             i=j;
-                        }
+                        }*/
                     }
 
                     @Override
@@ -130,7 +179,6 @@ public class ChatFragment extends Fragment {
 
                     }
                 });
-                //userIdList=userCurrent.getListFriend();
 
             }
 
@@ -139,23 +187,6 @@ public class ChatFragment extends Fragment {
 
             }
         });
-//        reference= FirebaseDatabase.getInstance().getReference("User").child(mAuth.getCurrentUser().getUid());
-//
-//        reference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                User user=snapshot.getValue(User.class);
-//                textViewName.setText(user.getListFriend().get(1));
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-
-
-
         return view;
     }
 }
