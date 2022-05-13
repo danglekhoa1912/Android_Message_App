@@ -134,7 +134,7 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                                     holder.time.setText(converTime(Long.parseLong(chat.getTimestamp())));
                                     if (chat.getStatus().equals("sent")) {
                                         holder.user_chat.setTypeface(null, Typeface.BOLD);
-                                        sendNotification(holder,chat);
+                                        sendNotification(holder,chat,holder.getAdapterPosition());
                                     } else holder.user_chat.setTypeface(null, Typeface.NORMAL);
                                 }
                             }
@@ -161,7 +161,7 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                                     holder.time.setText(converTime(Long.parseLong(chat.getTimestamp())));
                                     if (chat.getStatus().equals("sent")) {
                                         holder.user_chat.setTypeface(null, Typeface.BOLD);
-                                        sendNotification(holder,chat);
+                                        sendNotification(holder,chat,holder.getAdapterPosition());
                                     } else holder.user_chat.setTypeface(null, Typeface.NORMAL);
                                 }
                             }
@@ -284,12 +284,13 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
         }
     }
 
-    public void sendNotification(UserItemChatAdapter.ViewHolder holder,Chat chat){
+    public void sendNotification(UserItemChatAdapter.ViewHolder holder,Chat chat,int Position){
 
         Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         Intent notifyIntent = new Intent(context, MessageActivity.class);
-        notifyIntent.putExtra("userId", userIdList.get(holder.getAdapterPosition()));
-        PendingIntent notifyPendingIntent=PendingIntent.getActivity(context,new Random().nextInt(),notifyIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        System.out.println(userIdList+" "+Position);
+//        notifyIntent.putExtra("userId", userIdList.get(Position));
+//        PendingIntent notifyPendingIntent=PendingIntent.getActivity(context,new Random().nextInt(),notifyIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder=new NotificationCompat.Builder(context,"My Notification");
         builder.setContentTitle("Bạn có tin nhắn mời từ " + holder.user_name.getText().toString());
@@ -298,7 +299,7 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
         builder.setAutoCancel(true);
         builder.setSound(uri);
         builder.setPriority(NotificationCompat.PRIORITY_MAX);
-        builder.setContentIntent(notifyPendingIntent);
+//        builder.setContentIntent(notifyPendingIntent);
 
         NotificationManagerCompat.from(context).notify(new Random().nextInt(),builder.build());
     }
