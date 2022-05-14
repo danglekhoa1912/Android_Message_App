@@ -260,7 +260,6 @@ public class RegisterActivity extends AppCompatActivity {
                                         "Verification email sent to " + mUser.getEmail(),
                                         Toast.LENGTH_SHORT).show();
                             } else {
-                                Log.e("TAG", "sendEmailVerification", task.getException());
                                 Toast.makeText(RegisterActivity.this,
                                         "Failed to send verification email.",
                                         Toast.LENGTH_SHORT).show();
@@ -270,7 +269,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                     reference= FirebaseDatabase.getInstance().getReference("User").child(userId);
                     List<String> list = new ArrayList<String>();
-                    list.add("");
                     User user=new User(inputUserName.getText().toString(),"default",inputMoblie.getText().toString(),list,list, inputUserName.getText().toString().toLowerCase(),"offline");
                     reference.setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
