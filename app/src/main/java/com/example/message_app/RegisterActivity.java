@@ -35,6 +35,7 @@ import java.text.Normalizer;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -71,6 +72,14 @@ public class RegisterActivity extends AppCompatActivity {
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         // return pattern.matcher(temp).replaceAll("");
         return pattern.matcher(temp).replaceAll("").replaceAll("Đ", "D").replace("đ", "d");
+    }
+
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    public static boolean validEmail(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
     }
 
     public static boolean validMobile(String mb, TextInputEditText $mobile){
@@ -189,6 +198,16 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             }
         });
+        inputEmail.setOnFocusChangeListener((new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (!b){
+                    if(!validEmail(inputEmail.getText().toString())){
+                        inputEmail.setError("Email không đúng định dạng");
+                    } else inputEmail.setError(null);
+                }
+            }
+        }));
         tvLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
