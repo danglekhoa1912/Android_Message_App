@@ -141,7 +141,6 @@ public class ChatFragment extends Fragment {
                                                 if (compareTime(userIdList.get(k).getTime(),userIdList.get(l).getTime())){
                                                     Collections.swap(userIdList,l,k);
                                                     isChange=true;
-                                                    Log.d("isChange", String.valueOf(isChange));
                                                 }
                                             }
                                         }
