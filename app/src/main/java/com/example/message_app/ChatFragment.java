@@ -54,6 +54,7 @@ public class ChatFragment extends Fragment {
     private UserItemChatAdapter UserItemChatAdapter;
     private List<userList> userIdList=new ArrayList<userList>();
     private String uid;
+    final int[] finali = {0};
 
 
     public ChatFragment() {
@@ -114,6 +115,7 @@ public class ChatFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         userIdList.clear();
+                        boolean isUser=false;
                         for(DataSnapshot snapshot1:snapshot.getChildren()){
                             if(snapshot1.getKey().contains(firebaseUser.getUid())){
                                 String id= snapshot1.getKey().replace(firebaseUser.getUid(), "");
@@ -124,7 +126,7 @@ public class ChatFragment extends Fragment {
                         }
                         for (int j = 0; j < userIdList.size(); j++) {
                             int finalJ = j;
-                            final int[] finali = {0};
+                            Log.d("finalj", String.valueOf(finalJ));
                             FirebaseDatabase.getInstance().getReference("chat_rooms").child(userIdList.get(j).getChat()).orderByKey().limitToLast(1).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -143,7 +145,9 @@ public class ChatFragment extends Fragment {
                                             }
                                         }
                                     }
-                                    if (isChange || finali[0] !=finalJ){
+
+                                    if ((isChange || finali[0] !=finalJ)&&finalJ==userIdList.size()-1){
+                                        isChange=false;
                                         List<String> idList=new ArrayList<String>();
                                         for (userList us:
                                                 userIdList) {
@@ -151,7 +155,9 @@ public class ChatFragment extends Fragment {
                                         }
                                         UserItemChatAdapter = new UserItemChatAdapter(getContext(), idList,true);
                                         rcv.setAdapter(UserItemChatAdapter);
+                                        Log.d("final", finali[0]+"-"+finalJ);
                                         finali[0] =finalJ;
+                                        Log.d("final1", finali[0]+"-"+finalJ);
                                     }
                                 }
 
