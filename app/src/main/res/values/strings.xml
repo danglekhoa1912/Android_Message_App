@@ -15,7 +15,7 @@
 
 
     <!--thông tin người dùng-->
-    <string name="app_name">Message_App</string>
+    <string name="app_name">IMessage</string>
     <string name="user_name">Tên</string>
     <string name="password">Mật khẩu</string>
     <string name="confirm_pass">Nhập lại mật khẩu</string>
