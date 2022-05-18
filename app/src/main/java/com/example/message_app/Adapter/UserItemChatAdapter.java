@@ -61,12 +61,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapter.ViewHolder> {
     private Context context;
     private List<String> userIdList;
-    final String[] key = new String[3];
     FirebaseUser mUser;
     String uid;
-    DataSnapshot snapshot_chat_left, snapshot_chat_right;
     private boolean isChat;
-
 
 
     public UserItemChatAdapter(Context context, List<String> userIdList, boolean isChat) {
@@ -75,10 +72,10 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
         this.isChat = isChat;
     }
 
-    private String converTime(Long t1) {
+    private String convertTime(Long t1) {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
         Date date1 = new Date(t1);
-        return date1.getHours()+" : "+date1.getMinutes();
+        return date1.getHours() + " : " + date1.getMinutes();
     }
 
     @NonNull
@@ -88,13 +85,13 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
         uid = mUser.getUid();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_chat_item, parent, false);
 
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-            Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            AudioAttributes attributes=new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).build();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            AudioAttributes attributes = new AudioAttributes.Builder().setUsage(AudioAttributes.USAGE_NOTIFICATION).build();
 
-            NotificationChannel channel=new NotificationChannel("My Notification","My Notification",NotificationManager.IMPORTANCE_HIGH);
-            channel.setSound(uri,attributes);
-            NotificationManager manager= context.getSystemService(NotificationManager.class);
+            NotificationChannel channel = new NotificationChannel("My Notification", "My Notification", NotificationManager.IMPORTANCE_HIGH);
+            channel.setSound(uri, attributes);
+            NotificationManager manager = context.getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel);
         }
 
@@ -104,7 +101,7 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
     @Override
     public void onBindViewHolder(@NonNull UserItemChatAdapter.ViewHolder holder, int position) {
         DatabaseReference databaseListfriend = FirebaseDatabase.getInstance().getReference("User").child(userIdList.get(position));
-        databaseListfriend.addValueEventListener(new ValueEventListener() {
+        databaseListfriend.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 User user = snapshot.getValue(User.class);
@@ -120,17 +117,13 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                                 if (chat.getSender().equals(uid)) {
                                     holder.user_chat.setTypeface(null, Typeface.NORMAL);
                                     holder.user_chat.setText("Bạn: " + chat.getMess());
-                                    holder.time.setText(converTime(Long.parseLong(chat.getTimestamp())));
+                                    holder.time.setText(convertTime(Long.parseLong(chat.getTimestamp())));
                                 } else {
                                     holder.user_chat.setText(holder.user_name.getText().toString() + ":" + chat.getMess());
-                                    holder.time.setText(converTime(Long.parseLong(chat.getTimestamp())));
+                                    holder.time.setText(convertTime(Long.parseLong(chat.getTimestamp())));
                                     if (chat.getStatus().equals("sent")) {
-                                        if(holder.user_chat.getTypeface()!=null){
-                                            if ( holder.user_chat.getTypeface().getStyle()!=Typeface.BOLD ){
-                                                Log.d("Typeface", String.valueOf(chat.getStatus().equals("sent")));
-                                                sendNotification(holder,chat);
-                                            }
-                                        }
+                                        if (holder.user_chat.getTypeface() == null)
+                                            sendNotification(holder, chat);
                                         holder.user_chat.setTypeface(null, Typeface.BOLD);
                                     } else holder.user_chat.setTypeface(null, Typeface.NORMAL);
                                 }
@@ -152,17 +145,13 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                                 if (chat.getSender().equals(uid)) {
                                     holder.user_chat.setTypeface(null, Typeface.NORMAL);
                                     holder.user_chat.setText("Bạn: " + chat.getMess());
-                                    holder.time.setText(converTime(Long.parseLong(chat.getTimestamp())));
+                                    holder.time.setText(convertTime(Long.parseLong(chat.getTimestamp())));
                                 } else {
                                     holder.user_chat.setText(holder.user_name.getText().toString() + ": " + chat.getMess());
-                                    holder.time.setText(converTime(Long.parseLong(chat.getTimestamp())));
+                                    holder.time.setText(convertTime(Long.parseLong(chat.getTimestamp())));
                                     if (chat.getStatus().equals("sent")) {
-                                        if(holder.user_chat.getTypeface()!=null){
-                                            if ( holder.user_chat.getTypeface().getStyle()!=Typeface.BOLD ){
-                                                Log.d("Typeface", String.valueOf(chat.getStatus().equals("sent")));
-                                                sendNotification(holder,chat);
-                                            }
-                                        }
+                                        if (holder.user_chat.getTypeface() == null)
+                                            sendNotification(holder, chat);
                                         holder.user_chat.setTypeface(null, Typeface.BOLD);
                                     } else holder.user_chat.setTypeface(null, Typeface.NORMAL);
                                 }
@@ -192,62 +181,12 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                     holder.img_onl.setVisibility(View.GONE);
                     holder.img_off.setVisibility(View.GONE);
                 }
-                FirebaseDatabase.getInstance().getReference("chat_rooms").child(uid + "_" + uid2).orderByKey().limitToLast(1).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                                snapshot_chat_left = snapshot1;
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-                key[2] = "false";
-                FirebaseDatabase.getInstance().getReference("chat_rooms").child(uid2 + '_' + uid).orderByKey().limitToLast(1).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if (snapshot.exists()) {
-                            for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                                snapshot_chat_right = snapshot1;
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        key[2] = "false";
-                        Chat chat = snapshot_chat_right == null ? new Chat("", "", "", "", "", "") : snapshot_chat_right.getValue(Chat.class);
-                        if (chat.getStatus().equals("sent") && chat.getSender().equals(uid2) && snapshot_chat_right != null) {
-                            key[0] = snapshot_chat_right.getKey();
-                            key[1] = uid2 + "_" + uid;
-                            key[2] = "true";
-                        }
-
-                        chat = snapshot_chat_left == null ? new Chat("", "", "", "", "", "") : snapshot_chat_left.getValue(Chat.class);
-                        Log.d(TAG, String.valueOf(chat));
-                        if (chat.getStatus().equals("sent") && chat.getSender().equals(uid2) && snapshot_chat_left != null) {
-                            key[0] = snapshot_chat_left.getKey();
-                            key[1] = uid + "_" + uid2;
-                            key[2] = "true";
-                        }
-                        if (key[2].equals("true")) {
-                            Map<String, Object> change = new HashMap<>();
-                            change.put("status", "seen");
-                            FirebaseDatabase.getInstance().getReference("chat_rooms").child(key[1]).child(key[0]).updateChildren(change);
-                        }
                         Intent intent = new Intent(context, MessageActivity.class);
                         intent.putExtra("userId", userIdList.get(holder.getAdapterPosition()));
+                        intent.putExtra("check", true);
                         context.startActivity(intent);
                     }
                 });
@@ -286,25 +225,26 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
         }
     }
 
-    public void sendNotification(UserItemChatAdapter.ViewHolder holder,Chat chat){
+    public void sendNotification(UserItemChatAdapter.ViewHolder holder, Chat chat) {
 
-        Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         Intent notifyIntent = new Intent(context, MessageActivity.class);
 
-        NotificationCompat.Builder builder=new NotificationCompat.Builder(context,"My Notification");
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "My Notification");
         builder.setContentTitle("Bạn có tin nhắn mời từ " + holder.user_name.getText().toString());
         builder.setContentText(chat.getMess());
         builder.setSmallIcon(R.drawable.ic_launcher_background);
         builder.setAutoCancel(true);
         builder.setSound(uri);
         builder.setPriority(NotificationCompat.PRIORITY_MAX);
-        if(holder.getAdapterPosition()!=-1){
+        if (holder.getAdapterPosition() != -1) {
             notifyIntent.putExtra("userId", userIdList.get(holder.getAdapterPosition()));
-            PendingIntent notifyPendingIntent=PendingIntent.getActivity(context,new Random().nextInt(),notifyIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+            notifyIntent.putExtra("check",true);
+            PendingIntent notifyPendingIntent = PendingIntent.getActivity(context, new Random().nextInt(), notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             builder.setContentIntent(notifyPendingIntent);
         }
 
-        NotificationManagerCompat.from(context).notify(new Random().nextInt(),builder.build());
+        NotificationManagerCompat.from(context).notify(new Random().nextInt(), builder.build());
     }
 
 }
