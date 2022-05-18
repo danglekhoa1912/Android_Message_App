@@ -2,6 +2,7 @@ package com.example.message_app.Adapter;
 
 import static android.content.ContentValues.TAG;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -29,9 +30,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.message_app.ChatFragment;
 import com.example.message_app.MessageActivity;
 import com.example.message_app.R;
 import com.example.message_app.model.Chat;
@@ -63,19 +67,6 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
     DataSnapshot snapshot_chat_left, snapshot_chat_right;
     private boolean isChat;
 
-//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-//    public static void noti() {
-//        AudioAttributes attrs = new AudioAttributes.Builder()
-//                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-//                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-//                .build();
-//        AudioManager audioManager;
-//        SoundPool sp = new SoundPool.Builder()
-//                .setMaxStreams(10)
-//                .setAudioAttributes(attrs)
-//                .build();
-//        sp.play(R.raw.noti, 1, 1, 1, 0, 1f);
-//    }
 
 
     public UserItemChatAdapter(Context context, List<String> userIdList, boolean isChat) {
@@ -123,6 +114,7 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
+                            ChatFragment firstFragment = new ChatFragment();
                             for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                                 Chat chat = snapshot1.getValue(Chat.class);
                                 if (chat.getSender().equals(uid)) {
@@ -133,8 +125,13 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                                     holder.user_chat.setText(holder.user_name.getText().toString() + ":" + chat.getMess());
                                     holder.time.setText(converTime(Long.parseLong(chat.getTimestamp())));
                                     if (chat.getStatus().equals("sent")) {
+                                        if(holder.user_chat.getTypeface()!=null){
+                                            if ( holder.user_chat.getTypeface().getStyle()!=Typeface.BOLD ){
+                                                Log.d("Typeface", String.valueOf(chat.getStatus().equals("sent")));
+                                                sendNotification(holder,chat);
+                                            }
+                                        }
                                         holder.user_chat.setTypeface(null, Typeface.BOLD);
-                                        sendNotification(holder,chat);
                                     } else holder.user_chat.setTypeface(null, Typeface.NORMAL);
                                 }
                             }
@@ -160,8 +157,13 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                                     holder.user_chat.setText(holder.user_name.getText().toString() + ": " + chat.getMess());
                                     holder.time.setText(converTime(Long.parseLong(chat.getTimestamp())));
                                     if (chat.getStatus().equals("sent")) {
+                                        if(holder.user_chat.getTypeface()!=null){
+                                            if ( holder.user_chat.getTypeface().getStyle()!=Typeface.BOLD ){
+                                                Log.d("Typeface", String.valueOf(chat.getStatus().equals("sent")));
+                                                sendNotification(holder,chat);
+                                            }
+                                        }
                                         holder.user_chat.setTypeface(null, Typeface.BOLD);
-                                        sendNotification(holder,chat);
                                     } else holder.user_chat.setTypeface(null, Typeface.NORMAL);
                                 }
                             }
