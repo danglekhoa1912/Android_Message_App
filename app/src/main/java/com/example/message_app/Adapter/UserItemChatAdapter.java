@@ -187,6 +187,7 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
                         Intent intent = new Intent(context, MessageActivity.class);
                         intent.putExtra("userId", userIdList.get(holder.getAdapterPosition()));
                         intent.putExtra("check", true);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
                     }
                 });
