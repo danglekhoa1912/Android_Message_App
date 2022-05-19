@@ -144,7 +144,7 @@ public class ProfileFragment extends Fragment {
                     user_avatar.setImageResource(R.mipmap.ic_launcher);
                 }
                 else{
-                    Glide.with(ProfileFragment.this).load(user.getAvatar()).into(user_avatar);
+                    Glide.with(getActivity().getApplicationContext()).load(user.getAvatar()).into(user_avatar);
                 }
             }
 
