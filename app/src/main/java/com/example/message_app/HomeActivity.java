@@ -127,7 +127,7 @@ public class HomeActivity extends AppCompatActivity {
 
             case R.id.change_pass:
                 startActivity(new Intent(HomeActivity.this,ChangePassActivity.class));
-                finish();
+
                 return true;
         }
         return false;
