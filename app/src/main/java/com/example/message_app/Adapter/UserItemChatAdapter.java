@@ -101,6 +101,34 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
     @Override
     public void onBindViewHolder(@NonNull UserItemChatAdapter.ViewHolder holder, int position) {
         DatabaseReference databaseListfriend = FirebaseDatabase.getInstance().getReference("User").child(userIdList.get(position));
+        databaseListfriend.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                User user = snapshot.getValue(User.class);
+                if (user.getAvatar().equals("default")) {
+                    holder.img_avatar.setImageResource(R.mipmap.ic_launcher);
+                } else {
+                    Glide.with(context).load(user.getAvatar()).into(holder.img_avatar);
+                }
+                if (isChat) {
+                    if (user.getStatus().equals("online")) {
+                        holder.img_onl.setVisibility(View.VISIBLE);
+                        holder.img_off.setVisibility(View.GONE);
+                    } else {
+                        holder.img_onl.setVisibility(View.GONE);
+                        holder.img_off.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    holder.img_onl.setVisibility(View.GONE);
+                    holder.img_off.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         databaseListfriend.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -164,23 +192,6 @@ public class UserItemChatAdapter extends RecyclerView.Adapter<UserItemChatAdapte
 
                     }
                 });
-                if (user.getAvatar().equals("default")) {
-                    holder.img_avatar.setImageResource(R.mipmap.ic_launcher);
-                } else {
-                    Glide.with(context).load(user.getAvatar()).into(holder.img_avatar);
-                }
-                if (isChat) {
-                    if (user.getStatus().equals("online")) {
-                        holder.img_onl.setVisibility(View.VISIBLE);
-                        holder.img_off.setVisibility(View.GONE);
-                    } else {
-                        holder.img_onl.setVisibility(View.GONE);
-                        holder.img_off.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    holder.img_onl.setVisibility(View.GONE);
-                    holder.img_off.setVisibility(View.GONE);
-                }
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
