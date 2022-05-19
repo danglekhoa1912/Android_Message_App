@@ -79,14 +79,14 @@ public class ChangePassActivity extends AppCompatActivity {
                         passNew.setError("Không được bỏ trống mục này");
                     else
                         passNew.setError(null);
-                    passNew.setText(passNew.getText().toString());
+                    passNewCheck.setText(passNewCheck.getText().toString());
                 }
             }
         });
         passNewCheck.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                String s1=passOld.getText().toString();
+                String s1=passNew .getText().toString();
                 String s2=passNewCheck.getText().toString();
                 if(!b){
                     if(!s1.equals(s2)){
@@ -115,6 +115,7 @@ public class ChangePassActivity extends AppCompatActivity {
                                                 public void onComplete(@NonNull Task<Void> taskChangePass) {
                                                     if (taskChangePass.isSuccessful()) {
                                                         Toast.makeText( ChangePassActivity.this, "Thay đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                                                        ChangePassActivity.this.finish();
                                                     }
                                                     else{
                                                         Toast.makeText( ChangePassActivity.this, "Thay đổi mật khẩu thất bại", Toast.LENGTH_SHORT).show();

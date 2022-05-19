@@ -52,14 +52,9 @@ public class ChatFragment extends Fragment {
     private String mParam2;
 
     private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
-    private int i = 0;
-    private DatabaseReference reference;
-    private DataSnapshot dataSnapshot;
     private UserItemChatAdapter UserItemChatAdapter;
     private List<userList> userIdList = new ArrayList<userList>();
-    private List<String> truyVet=new ArrayList<String>();
-    final int[] finali = {0};
+    private List<String> truyVet = new ArrayList<String>();
 
 
     public ChatFragment() {
@@ -110,7 +105,6 @@ public class ChatFragment extends Fragment {
                         String id = snapshot1.getKey().replace(firebaseUser.getUid(), "");
                         id = id.replace("_", "");
                         userList us = new userList(id, snapshot1.getKey(), 0L);
-                        Log.d("uid2", us.getId());
                         userIdList.add(us);
                     }
                 }
@@ -124,28 +118,25 @@ public class ChatFragment extends Fragment {
                                 userIdList.get(finalJ).setTime(Long.parseLong(chat != null ? chat.getTimestamp() : null));
                             }
                             boolean isChange = false;
-                            Log.d("ckkkk", String.valueOf(isChange));
                             if (finalJ == userIdList.size() - 1) {
                                 for (int k = 0; k < userIdList.size() - 1; k++) {
                                     for (int l = k; l < userIdList.size(); l++) {
                                         if (compareTime(userIdList.get(k).getTime(), userIdList.get(l).getTime())) {
                                             Collections.swap(userIdList, l, k);
-                                            isChange = true;
                                         }
                                     }
                                 }
-                                if ((isChange || finalJ == userIdList.size() - 1)) {
-                                    List<String> idList = new ArrayList<String>();
-                                    for (userList us :
-                                            userIdList) {
-                                        idList.add(us.getId());
-                                    }
-                                    if (!idList.equals(truyVet)){
-                                        UserItemChatAdapter = new UserItemChatAdapter(getContext(), idList, true);
-                                        rcv.setAdapter(UserItemChatAdapter);
-                                        truyVet=idList;
-                                    }
+                                List<String> idList = new ArrayList<String>();
+                                for (userList us :
+                                        userIdList) {
+                                    idList.add(us.getId());
                                 }
+                                if (!idList.equals(truyVet) ) {
+                                    UserItemChatAdapter = new UserItemChatAdapter(getContext(), idList, true);
+                                    rcv.setAdapter(UserItemChatAdapter);
+                                    truyVet = idList;
+                                }
+
                             }
                         }
 
