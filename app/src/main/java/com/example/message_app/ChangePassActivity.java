@@ -63,7 +63,7 @@ public class ChangePassActivity extends AppCompatActivity {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ChangePassActivity.this,HomeActivity.class));
+
                 finish();
             }
         });
