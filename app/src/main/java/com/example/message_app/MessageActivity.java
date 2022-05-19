@@ -47,6 +47,7 @@ public class MessageActivity extends AppCompatActivity {
 
     public static final int ID_SENDER_LEFT = 0;
     public static final int ID_SENDER_RIGHT = 1;
+    static boolean active;
     public int positionIdSender;
 
     CircleImageView profile_image;
