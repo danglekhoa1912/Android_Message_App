@@ -13,15 +13,18 @@
         android:theme="@style/Theme.Message_App"
         android:usesCleartextTraffic="true">
         <activity
-            android:launchMode="singleTask"
-            android:taskAffinity=""
-            android:excludeFromRecents="true"
-            android:name=".MessageActivity"
+            android:name=".ChangePassActivity"
             android:exported="false" />
+        <activity
+            android:name=".MessageActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:taskAffinity="" />
         <activity
             android:name=".HomeActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".LoginActivity"
             android:exported="false" />
@@ -37,7 +40,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
