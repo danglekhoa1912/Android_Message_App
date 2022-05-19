@@ -127,7 +127,6 @@ public class HomeActivity extends AppCompatActivity {
 
             case R.id.change_pass:
                 startActivity(new Intent(HomeActivity.this,ChangePassActivity.class));
-
                 return true;
         }
         return false;
@@ -152,5 +151,11 @@ public class HomeActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         status("offline");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        status("online");
     }
 }
