@@ -132,7 +132,7 @@ public class ChatFragment extends Fragment {
                                     idList.add(us.getId());
                                 }
                                 if (!idList.equals(truyVet) ) {
-                                    UserItemChatAdapter = new UserItemChatAdapter(getContext(), idList, true);
+                                    UserItemChatAdapter = new UserItemChatAdapter(getActivity().getApplicationContext(), idList, true);
                                     rcv.setAdapter(UserItemChatAdapter);
                                     truyVet = idList;
                                 }
