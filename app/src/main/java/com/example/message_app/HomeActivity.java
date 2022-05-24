@@ -128,6 +128,9 @@ public class HomeActivity extends AppCompatActivity {
             case R.id.change_pass:
                 startActivity(new Intent(HomeActivity.this,ChangePassActivity.class));
                 return true;
+            case R.id.help:
+                startActivity(new Intent(HomeActivity.this,TutorialActivity.class));
+                return true;
         }
         return false;
     }
@@ -139,6 +142,7 @@ public class HomeActivity extends AppCompatActivity {
 
         hashMap.put("status", status);
         reference.updateChildren(hashMap);
+
     }
 
     @Override
