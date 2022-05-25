@@ -27,7 +27,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ĐĂNG KÝ"
+            android:text="@string/register"
             android:textColor="@color/primary"
             android:textSize="40sp"
             android:textStyle="bold" />
@@ -80,7 +80,7 @@
             android:layout_height="wrap_content"
             android:background="@color/whiteGray"
             android:layout_marginTop="5dp"
-            android:hint="Số điện thoại">
+            android:hint="@string/phone">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/inputMoblie"
@@ -142,11 +142,11 @@
                 android:enabled="false"
                 android:id="@+id/birthday"
                 android:inputType="date"
-                android:hint="Ngày sinh" />
+                android:hint="@string/birth_day" />
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Chọn ngày"
+                android:text="@string/choose_date"
                 android:id="@+id/btnDate"/>
 
         </LinearLayout>
@@ -163,7 +163,7 @@
             android:id="@+id/btnSignUp"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:text="Đăng ký" />
+            android:text="@string/register" />
 
 
         <LinearLayout
@@ -174,12 +174,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Do you have a account?" />
+                android:text="@string/have_acc" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" Login here"
+                android:text="@string/login_here"
                 android:textColor="@color/primary"
                 android:id="@+id/tvLogin"/>
         </LinearLayout>

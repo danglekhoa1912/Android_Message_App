@@ -117,18 +117,20 @@ public class ProfileFragment extends Fragment {
                 new ActivityResultCallback<Uri>() {
                     @Override
                     public void onActivityResult(Uri result) {
-                        final StorageReference referenceStore=storage.getReference("Avatar").child(result.getLastPathSegment());
-                        referenceStore.putFile(result).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                referenceStore.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        reference.child("avatar").setValue(uri.toString());
-                                    }
-                                });
-                            }
-                        });
+                        if (result != null) {
+                            final StorageReference referenceStore = storage.getReference("Avatar").child(result.getLastPathSegment());
+                            referenceStore.putFile(result).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    referenceStore.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            reference.child("avatar").setValue(uri.toString());
+                                        }
+                                    });
+                                }
+                            });
+                        }
                     }
                 }
         );
@@ -144,7 +146,8 @@ public class ProfileFragment extends Fragment {
                     user_avatar.setImageResource(R.mipmap.ic_launcher);
                 }
                 else{
-                    Glide.with(getActivity().getApplicationContext()).load(user.getAvatar()).into(user_avatar);
+                    if(getActivity()!=null)
+                        Glide.with(getActivity().getApplicationContext()).load(user.getAvatar()).into(user_avatar);
                 }
             }
 
@@ -158,16 +161,16 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                if (btnEdit.getText().toString().equals("Sửa thông tin")){
+                if (btnEdit.getText().toString().equals(getString(R.string.edit))){
                     //inputEmail.setEnabled(true);
                     inputUserName.setEnabled(true);
                     inputMobile.setEnabled(true);
                     inputBirthdate.setEnabled(true);
                     image_edit.setVisibility(View.VISIBLE);
-                    btnEdit.setText("Lưu thay đổi");
+                    btnEdit.setText(getString(R.string.save));
                 }
                 else {
-                    btnEdit.setText("Sửa thông tin");
+                    btnEdit.setText(getString(R.string.edit));
                     image_edit.setVisibility(View.INVISIBLE);
                     inputUserName.setEnabled(false);
                     inputMobile.setEnabled(false);
@@ -180,7 +183,7 @@ public class ProfileFragment extends Fragment {
                     reference.updateChildren(change);
                     change.put("mobile",inputMobile.getText().toString());
                     reference.updateChildren(change);
-                    Toast.makeText(getContext(), "Đã hoàn thành", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.message_done), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -188,7 +191,7 @@ public class ProfileFragment extends Fragment {
         user_avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(btnEdit.getText().equals("Lưu thay đổi")){
+                if(btnEdit.getText().equals(getString(R.string.save))){
                     mTakePhoto.launch("image/*");
                 }
             }
@@ -200,7 +203,7 @@ public class ProfileFragment extends Fragment {
                 if(!b){
                     String s=inputMobile.getText().toString();
                     if (!validMobile(s)){
-                        inputMobile.setError("Số điện thoại không đúng định dạng");
+                        inputMobile.setError(getString(R.string.valid_phone));
                         btnEdit.setEnabled(false);
                     }
                     else {

@@ -145,7 +145,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if(!b){
                     String s=inputMoblie.getText().toString();
                     if (!validMobile(s,inputMoblie)){
-                        inputMoblie.setError("Số điện thoại không đúng định dạng");
+                        inputMoblie.setError(getString(R.string.valid_phone));
                     }
                     else {
                         inputMoblie.setError(null);
@@ -165,10 +165,10 @@ public class RegisterActivity extends AppCompatActivity {
             public void onFocusChange(View view, boolean b) {
                 if(!b){
                     if (!checkPassword(inputPassword.getText().toString())){
-                        inputPassword.setError("Mật khẩu phải có ít nhất 8 ký tự, 1 ký tự số, 1 chữ in hoa và 1 ký tự đặc biệt");
+                        inputPassword.setError(getString(R.string.valid_pass));
                     }
                     else if(inputPassword.getText().toString().isEmpty())
-                        inputPassword.setError("Không được bỏ trống mục này");
+                        inputPassword.setError(getString(R.string.empty_input));
                     else
                         inputPassword.setError(null);
                     inputRePassword.setText(inputRePassword.getText().toString());
@@ -182,7 +182,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String s2=inputRePassword.getText().toString();
                 if(!b){
                     if(!s1.equals(s2)){
-                        inputRePassword.setError("Mật khẩu không khớp");
+                        inputRePassword.setError(getString(R.string.incorrect_pass));
                     }
                     else inputRePassword.setError(null);
                 }
@@ -193,7 +193,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onFocusChange(View view, boolean b) {
                 if(!b) {
                     if (!checkUsername(inputUserName.getText().toString())) {
-                        inputUserName.setError("Tên không có ký tự đặc biệt!");
+                        inputUserName.setError(getString(R.string.valid_name));
                     } else inputUserName.setError(null);
                 }
             }
@@ -203,7 +203,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onFocusChange(View view, boolean b) {
                 if (!b){
                     if(!validEmail(inputEmail.getText().toString())){
-                        inputEmail.setError("Email không đúng định dạng");
+                        inputEmail.setError(getString(R.string.valid_emali));
                     } else inputEmail.setError(null);
                 }
             }
@@ -220,7 +220,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (!validSignUp()){
                     AlertDialog.Builder alertDialog;
                     alertDialog = new AlertDialog.Builder(RegisterActivity.this);
-                    alertDialog.setMessage("Dữ liệu không hợp lệ!");
+                    alertDialog.setMessage(getString(R.string.valid_input));
                     alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -267,7 +267,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(RegisterActivity.this,"Đăng ký thành công",Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this,getString(R.string.register_success),Toast.LENGTH_LONG).show();
                     mUser=mAuth.getCurrentUser();
                     String userId=mUser.getUid();
 
@@ -276,11 +276,11 @@ public class RegisterActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Toast.makeText(RegisterActivity.this,
-                                        "Verification email sent to " + mUser.getEmail(),
+                                        getString(R.string.verification_email_success) + mUser.getEmail(),
                                         Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(RegisterActivity.this,
-                                        "Failed to send verification email.",
+                                        getString(R.string.verification_email_fail),
                                         Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -298,7 +298,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                 }else {
-                    Toast.makeText(RegisterActivity.this,"Đăng ký thất bại",Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this,getString(R.string.register_fail),Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -317,7 +317,7 @@ public class RegisterActivity extends AppCompatActivity {
                 birthday.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                 lastSelectedYear = year;
                 if (LocalDate.now().getYear()-year<18){
-                    birthday.setError("Bạn phải đủ 18 tuổi !");
+                    birthday.setError(getString(R.string.valid_birth));
                 }
                 else birthday.setError(null);
                 lastSelectedMonth = monthOfYear;

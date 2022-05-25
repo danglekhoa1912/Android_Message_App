@@ -6,11 +6,15 @@
         app:showAsAction="never"
         />
     <item android:id="@+id/change_pass"
-        android:title="Đổi mật khẩu"
+        android:title="@string/change_password"
         app:showAsAction="never"
         />
     <item android:id="@+id/logout"
         android:title="@string/logout"
+        app:showAsAction="never"
+        />
+    <item android:id="@+id/change_language"
+        android:title="@string/change_language"
         app:showAsAction="never"
         />
 </menu>
