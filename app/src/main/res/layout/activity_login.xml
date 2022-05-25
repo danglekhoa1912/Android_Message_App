@@ -85,6 +85,7 @@
             android:layout_gravity="end"
             android:text="@string/forgot_password"
             android:textColor="@color/primary" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -116,5 +117,12 @@
                 android:text="@string/signup"
                 android:textColor="@color/primary" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvHuongDan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hướng dẫn IMessage"
+            android:textColor="@color/primary" />
     </LinearLayout>
 </LinearLayout>

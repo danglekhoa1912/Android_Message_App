@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private LinearLayout mainLayout;
     private TextInputEditText inputEmail, inputPassword;
     private Button btnLogin;
-    private TextView tvRegister;
+    private TextView tvRegister,tvHuongDan;
     private Intent myIntent;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
@@ -73,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         inputEmail = findViewById(R.id.inputEmailLogin);
         inputPassword = findViewById(R.id.inputPasswordLogin);
         tvRegister = findViewById(R.id.tvRegister);
+        tvHuongDan = findViewById(R.id.tvHuongDan);
         btnLogin = findViewById(R.id.btnLogin);
     }
 
@@ -81,6 +82,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 myIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(myIntent);
+            }
+        });
+
+        tvHuongDan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myIntent = new Intent(LoginActivity.this, TutorialActivity.class);
                 startActivity(myIntent);
             }
         });

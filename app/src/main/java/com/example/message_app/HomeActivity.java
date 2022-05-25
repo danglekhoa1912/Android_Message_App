@@ -157,6 +157,10 @@ public class HomeActivity extends AppCompatActivity {
                             }
                         });
                 builder.show();
+                return true;
+            case R.id.help:
+                startActivity(new Intent(HomeActivity.this,TutorialActivity.class));
+                return true;
         }
         return false;
     }
@@ -168,6 +172,7 @@ public class HomeActivity extends AppCompatActivity {
 
         hashMap.put("status", status);
         reference.updateChildren(hashMap);
+
     }
 
     @Override
