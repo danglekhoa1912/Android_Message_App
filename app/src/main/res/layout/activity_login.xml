@@ -122,7 +122,7 @@
             android:id="@+id/tvHuongDan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hướng dẫn IMessage"
+            android:text="@string/Tutorial"
             android:textColor="@color/primary" />
     </LinearLayout>
 </LinearLayout>
