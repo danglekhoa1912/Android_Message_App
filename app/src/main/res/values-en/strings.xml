@@ -51,4 +51,5 @@
     <string name="login_here">Login here</string>
     <string name="search">Search...</string>
     <string name="choose_date">"Choose date "</string>
+    <string name="Tutorial">Tutorial IMessage</string>
 </resources>

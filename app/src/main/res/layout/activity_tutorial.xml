@@ -22,8 +22,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/viewpager_imagetutor"
-        android:layout_marginTop="-70dp"
         android:layout_marginLeft="270dp"
-        android:text="Đã hiểu" />
+        android:layout_marginTop="-70dp"
+        android:text="@string/confirm" />
 
 </RelativeLayout>
