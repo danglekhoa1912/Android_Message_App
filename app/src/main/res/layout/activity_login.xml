@@ -107,13 +107,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Don’t have a account? " />
+                android:text="@string/dont_have_acc" />
 
             <TextView
                 android:id="@+id/tvRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sign up here"
+                android:text="@string/signup"
                 android:textColor="@color/primary" />
         </LinearLayout>
     </LinearLayout>

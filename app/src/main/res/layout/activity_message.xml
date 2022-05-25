@@ -73,7 +73,7 @@
             android:layout_toLeftOf="@id/btn_send"
             android:layout_toRightOf="@+id/btn_sendImage"
             android:background="@color/whiteGray"
-            android:hint="Type a message..." />
+            android:hint="@string/hint_input_mess" />
 
         <ImageButton
             android:id="@+id/btn_send"

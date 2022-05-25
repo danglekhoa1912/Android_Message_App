@@ -1,11 +1,17 @@
 package com.example.message_app;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +30,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.prefs.Preferences;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -48,6 +56,8 @@ public class HomeActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
 
         AnhXa();
+
+
         mAuth=FirebaseAuth.getInstance();
 
         getUser();
@@ -123,11 +133,30 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(new Intent(HomeActivity.this,LoginActivity.class));
                 finish();
                 return true;
-
-
             case R.id.change_pass:
                 startActivity(new Intent(HomeActivity.this,ChangePassActivity.class));
                 return true;
+            case R.id.change_language:
+                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                builder.setTitle(R.string.choose_language)
+                        .setItems(R.array.language, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                switch (i){
+                                    case 0:
+                                        changeLanguage("vi");
+                                        saveSetting("lang","vi");
+                                        return;
+                                    case 1:
+                                        changeLanguage("en");
+                                        saveSetting("lang","en");
+                                        return;
+                                    default:
+                                        return;
+                                }
+                            }
+                        });
+                builder.show();
         }
         return false;
     }
@@ -158,4 +187,25 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
         status("online");
     }
+
+    public void changeLanguage(String language){
+        Locale locale=new Locale(language);
+        Configuration config= new Configuration();
+        config.locale=locale;
+        getBaseContext().getResources().updateConfiguration(
+                config,
+                getBaseContext().getResources().getDisplayMetrics()
+        );
+        Intent intent=new Intent(HomeActivity.this,HomeActivity.class);
+        startActivity(intent);
+    }
+
+    public void saveSetting(String key,String value){
+        SharedPreferences preferences =getSharedPreferences("MySetting", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor=preferences.edit();
+        editor.putString(key,value);
+        editor.commit();
+    }
+
+
 }

@@ -134,7 +134,7 @@ public class MessageActivity extends AppCompatActivity {
                 if (!msg.equals("")) {
                     SendMessage(mUser.getUid(), userId, msg, "");
                 } else {
-                    Toast.makeText(MessageActivity.this, "Vui lòng nhập tin nhắn bạn muốn gừi", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MessageActivity.this, getString(R.string.message_chat_empty), Toast.LENGTH_SHORT).show();
                 }
                 text_view.setText("");
             }

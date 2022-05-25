@@ -73,10 +73,10 @@ public class ChangePassActivity extends AppCompatActivity {
             public void onFocusChange(View view, boolean b) {
                 if(!b){
                     if (!checkPassword(passNew.getText().toString())){
-                        passNew.setError("Mật khẩu phải có ít nhất 8 ký tự, 1 ký tự số, 1 chữ in hoa và 1 ký tự đặc biệt");
+                        passNew.setError(getString(R.string.valid_pass));
                     }
                     else if(passNew.getText().toString().isEmpty())
-                        passNew.setError("Không được bỏ trống mục này");
+                        passNew.setError(getString(R.string.empty_input));
                     else
                         passNew.setError(null);
                     passNewCheck.setText(passNewCheck.getText().toString());
@@ -90,7 +90,7 @@ public class ChangePassActivity extends AppCompatActivity {
                 String s2=passNewCheck.getText().toString();
                 if(!b){
                     if(!s1.equals(s2)){
-                        passNewCheck.setError("Mật khẩu không khớp");
+                        passNewCheck.setError(getString(R.string.incorrect_pass));
                     }
                     else passNewCheck.setError(null);
                 }
@@ -101,7 +101,7 @@ public class ChangePassActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(passOld.getText().toString().equals("") || passNew.getText().toString().equals("") || passNewCheck.getText().toString().equals("")){
-                    Toast.makeText( ChangePassActivity.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                    Toast.makeText( ChangePassActivity.this, getString(R.string.message_input), Toast.LENGTH_SHORT).show();
                 }else{
                     if(mUser != null){
                         AuthCredential  credential = EmailAuthProvider.getCredential(mUser.getEmail(),passOld.getText().toString());
@@ -114,16 +114,16 @@ public class ChangePassActivity extends AppCompatActivity {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> taskChangePass) {
                                                     if (taskChangePass.isSuccessful()) {
-                                                        Toast.makeText( ChangePassActivity.this, "Thay đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText( ChangePassActivity.this, getString(R.string.change_pass_success), Toast.LENGTH_SHORT).show();
                                                         ChangePassActivity.this.finish();
                                                     }
                                                     else{
-                                                        Toast.makeText( ChangePassActivity.this, "Thay đổi mật khẩu thất bại", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText( ChangePassActivity.this, getString(R.string.change_pass_fail), Toast.LENGTH_SHORT).show();
                                                     }
                                                 }
                                             });
                                 }else{
-                                    Toast.makeText( ChangePassActivity.this, "Mật khẩu cũ không đúng", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText( ChangePassActivity.this, getString(R.string.incorrect_pass), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -158,7 +158,7 @@ public class ChangePassActivity extends AppCompatActivity {
                     profile_image.setImageResource(R.mipmap.ic_launcher);
                 }
                 else{
-                    Glide.with(ChangePassActivity.this).load(user.getAvatar()).into(profile_image);
+                    Glide.with(getApplicationContext()).load(user.getAvatar()).into(profile_image);
                 }
             }
 

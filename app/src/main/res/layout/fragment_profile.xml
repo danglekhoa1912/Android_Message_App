@@ -99,7 +99,7 @@
                     android:inputType="text"
                     android:maxLines="1"
                     android:enabled="false"
-                    android:text="Luu Gia Huy"/>
+                    />
             </LinearLayout>
             <LinearLayout
                 android:layout_marginTop="25dp"

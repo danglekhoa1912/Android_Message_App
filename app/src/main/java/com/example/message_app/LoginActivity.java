@@ -104,16 +104,16 @@ public class LoginActivity extends AppCompatActivity {
                     mUser = mAuth.getCurrentUser();
                     if (task.isSuccessful()) {
                         if(mUser.isEmailVerified()){
-                            Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, getString(R.string.login_success), Toast.LENGTH_LONG).show();
                             myIntent = new Intent(LoginActivity.this, HomeActivity.class);
                             startActivity(myIntent);
                             finish();
                         }
                         else {
-                            Toast.makeText(LoginActivity.this,"Vui lòng xác nhận email của bạn",Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this,getString(R.string.email_verity),Toast.LENGTH_LONG).show();
                         }
                     } else {
-                            Toast.makeText(LoginActivity.this, "Email hoặc mật khẩu không chính xác", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, getString(R.string.login_fail), Toast.LENGTH_LONG).show();
                             Log.d("error",task.getException().toString());
                     }
                 }
