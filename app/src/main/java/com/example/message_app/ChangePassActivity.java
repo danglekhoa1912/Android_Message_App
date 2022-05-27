@@ -57,7 +57,6 @@ public class ChangePassActivity extends AppCompatActivity {
         mAuth=FirebaseAuth.getInstance();
         mUser = FirebaseAuth.getInstance().getCurrentUser();
 
-
         getUser();
 
         btn_back.setOnClickListener(new View.OnClickListener() {
@@ -86,8 +85,9 @@ public class ChangePassActivity extends AppCompatActivity {
         passNewCheck.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                String s1=passNew .getText().toString();
+                String s1=passNew.getText().toString();
                 String s2=passNewCheck.getText().toString();
+
                 if(!b){
                     if(!s1.equals(s2)){
                         passNewCheck.setError(getString(R.string.incorrect_pass));
@@ -98,35 +98,43 @@ public class ChangePassActivity extends AppCompatActivity {
         });
 
         btnOK.setOnClickListener(new View.OnClickListener() {
+            String s1=passNew.getText().toString();
+            String s2=passNewCheck.getText().toString();
+
             @Override
             public void onClick(View view) {
                 if(passOld.getText().toString().equals("") || passNew.getText().toString().equals("") || passNewCheck.getText().toString().equals("")){
                     Toast.makeText( ChangePassActivity.this, getString(R.string.message_input), Toast.LENGTH_SHORT).show();
                 }else{
-                    if(mUser != null){
-                        AuthCredential  credential = EmailAuthProvider.getCredential(mUser.getEmail(),passOld.getText().toString());
-                        mUser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if(task.isSuccessful()){
-                                    mUser.updatePassword(passNew.getText().toString())
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> taskChangePass) {
-                                                    if (taskChangePass.isSuccessful()) {
-                                                        Toast.makeText( ChangePassActivity.this, getString(R.string.change_pass_success), Toast.LENGTH_SHORT).show();
-                                                        ChangePassActivity.this.finish();
+                    if(passNew.getText().toString().equals(passNewCheck.getText().toString())) {
+                        if(mUser != null){
+                            AuthCredential  credential = EmailAuthProvider.getCredential(mUser.getEmail(),passOld.getText().toString());
+                            mUser.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        mUser.updatePassword(passNew.getText().toString())
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> taskChangePass) {
+                                                        if (taskChangePass.isSuccessful()) {
+                                                            Toast.makeText( ChangePassActivity.this, getString(R.string.change_pass_success), Toast.LENGTH_SHORT).show();
+                                                            ChangePassActivity.this.finish();
+                                                        }
+                                                        else{
+                                                            Toast.makeText( ChangePassActivity.this, getString(R.string.change_pass_fail), Toast.LENGTH_SHORT).show();
+                                                        }
                                                     }
-                                                    else{
-                                                        Toast.makeText( ChangePassActivity.this, getString(R.string.change_pass_fail), Toast.LENGTH_SHORT).show();
-                                                    }
-                                                }
-                                            });
-                                }else{
-                                    Toast.makeText( ChangePassActivity.this, getString(R.string.incorrect_pass), Toast.LENGTH_SHORT).show();
+                                                });
+                                    }else{
+                                        Toast.makeText( ChangePassActivity.this, getString(R.string.incorrect_pass), Toast.LENGTH_SHORT).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
+                    }
+                    else {
+                        Toast.makeText( ChangePassActivity.this, getString(R.string.incorrect_pass), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
